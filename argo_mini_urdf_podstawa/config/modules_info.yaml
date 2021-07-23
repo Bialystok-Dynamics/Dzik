@@ -1,0 +1,23 @@
+#### ADDITIONAL INFO TO MODULES ####
+
+argo_mini:
+  joint_state_controller:
+    type: joint_state_controller/JointStateController
+    publish_rate: 50
+
+  gazebo_ros_control:
+    pid_gains:
+      front_left_turn: {p: 2.0, i: 0.05, d: 0.0 }
+      front_right_turn: {p: 2.0, i: 0.05, d: 0.0 }
+      mid_left_turn: {p: 2.0, i: 0.05, d: 0.0 }
+      mid_right_turn: {p: 2.0, i: 0.05, d: 0.0 }
+      rear_left_turn: {p: 2.0, i: 0.05, d: 0.0 }
+      rear_right_turn: {p: 2.0, i: 0.05, d: 0.0 }
+      front_left_wheel: {p: 2.0, i: 0.05, d: 0.0 }
+      front_right_wheel: {p: 2.0, i: 0.05, d: 0.0 }
+      mid_left_wheel: {p: 2.0, i: 0.05, d: 0.0 }
+      mid_right_wheel: {p: 2.0, i: 0.05, d: 0.0 }
+      rear_left_wheel: {p: 2.0, i: 0.05, d: 0.0 }
+      rear_right_wheel: {p: 2.0, i: 0.05, d: 0.0 }
+      gimbal_yaw: {p: 2.0, i: 0.05, d: 0.0 }
+      gimbal_pitch: {p: 2.0, i: 0.05, d: 0.0 }
