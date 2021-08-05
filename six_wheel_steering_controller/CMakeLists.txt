@@ -2,9 +2,9 @@ cmake_minimum_required(VERSION 3.0.2)
 project(six_wheel_steering_controller)
 
 # Default to C++14
-if(NOT CMAKE_CXX_STANDARD)
+if (NOT CMAKE_CXX_STANDARD)
     set(CMAKE_CXX_STANDARD 14)
-endif()
+endif ()
 
 # Load catkin and all dependencies required for this package
 find_package(catkin REQUIRED COMPONENTS
@@ -16,6 +16,7 @@ find_package(catkin REQUIRED COMPONENTS
         roscpp
         tf
         urdf_geometry_parser
+        six_wheel_steering_msgs
         )
 
 find_package(Boost REQUIRED)
@@ -49,7 +50,13 @@ include_directories(
 add_library(${PROJECT_NAME}
         src/six_wheel_steering_controller.cpp
         src/wheel_unit.cpp
-        src/mode.cpp include/six_wheel_steering_controller/mode.h src/drive.cpp include/six_wheel_steering_controller/drive.h src/kinematics.cpp include/six_wheel_steering_controller/kinematics.h src/odometry.cpp include/six_wheel_steering_controller/odometry.h src/modes/mode1.cpp include/six_wheel_steering_controller/modes/mode1.h src/modes/mode2.cpp include/six_wheel_steering_controller/modes/mode2.h)
+        src/mode.cpp
+        src/drive.cpp
+        src/kinematics.cpp
+        src/odometry.cpp
+        src/modes/mode1.cpp
+        src/modes/mode2.cpp
+        src/math/vector.cpp)
 
 target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES})
 
