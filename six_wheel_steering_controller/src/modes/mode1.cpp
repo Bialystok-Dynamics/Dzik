@@ -10,3 +10,7 @@ void six_wheel_steering_controller::modes::Mode1::doSetCommand(six_wheel_steerin
     _drive->getRearLeft()->setCommand(command.rearLeft);
     _drive->getRearRight()->setCommand(command.rearRight);
 }
+
+six_wheel_steering_controller::EModes six_wheel_steering_controller::modes::Mode1::modeCode() const {
+    return EModes::Mode1;
+}

@@ -1,14 +1,15 @@
 #include <six_wheel_steering_controller/wheel_unit.h>
 #include <stdexcept>
+#include <utility>
 
-namespace six_wheel_steering_controller{
+namespace six_wheel_steering_controller {
 
     double WheelUnit::getWheelRadius() const {
         return _wheelRadius;
     }
 
     void WheelUnit::setWheelRadius(double wheelRadius) {
-        if(wheelRadius <0)
+        if (wheelRadius < 0)
             throw std::runtime_error("Wheel radius have to be greater or equal to 0");
         _wheelRadius = wheelRadius;
     }
@@ -34,9 +35,62 @@ namespace six_wheel_steering_controller{
     }
 
     void WheelUnit::setRotationalSpeedMax(double rotationalSpeedMax) {
-        if(rotationalSpeedMax < 0)
+        if (rotationalSpeedMax < 0)
             throw std::runtime_error("Maximal rotational speed have to be greater or equal to 0");
         _rotationalSpeedMax = rotationalSpeedMax;
+    }
+
+    WheelUnit::WheelUnit(hardware_interface::JointHandle steeringHandle, hardware_interface::JointHandle wheelHandle)
+            :
+            _steeringHandle(std::move(steeringHandle)), _wheelHandle(std::move(wheelHandle)) {
+
+    }
+
+    WheelUnitInfo WheelUnit::getInfo() const {
+        return {_steeringHandle.getPosition(), _wheelHandle.getVelocity() * _wheelRadius};
+    }
+
+    void WheelUnit::setCommand(WheelUnitInfo command) {
+        if (_wheelRadius == 0)
+            throw std::domain_error("Wheel radius cannot be 0");
+
+        command = optimizeCommand(command);
+        if (_angleMax != _angleMin) {
+            if (command.angle > _angleMax)
+                command.angle = _angleMax;
+            else if (command.angle < _angleMin)
+                command.angle = _angleMin;
+        }
+        _steeringHandle.setCommand(command.angle);
+
+
+        double rotSpeed = command.speed / _wheelRadius;
+
+        if (std::fabs(rotSpeed) > _rotationalSpeedMax && _rotationalSpeedMax != 0) {
+            double sign = std::copysign(1., rotSpeed);
+            rotSpeed = _rotationalSpeedMax * sign;
+        }
+
+        _wheelHandle.setCommand(rotSpeed);
+    }
+
+    WheelUnitInfo WheelUnit::optimizeCommand(WheelUnitInfo command) {
+        command.angle = std::fmod(command.angle, 2 * M_PI);
+        if (command.angle >= M_PI)
+            command.angle -= 2 * M_PI;
+        else if (command.angle <= -M_PI)
+            command.angle += 2 * M_PI;
+
+        if (command.angle >= M_PI_2){
+            command.angle -= M_PI;
+            command.speed *=-1;
+        }
+        else if (command.angle <= -M_PI_2){
+            command.angle += M_PI;
+            command.speed *= -1;
+        }
+
+        return command;
     }
 }
 

@@ -11,7 +11,7 @@ namespace six_wheel_steering_controller {
     public:
         explicit Odometry(std::shared_ptr<Drive> drive);
 
-        OdometryInfo getOdometry() const;
+        OdometryInfo getOdometry(double dt) const;
 
     private:
         std::shared_ptr<Drive> _drive;

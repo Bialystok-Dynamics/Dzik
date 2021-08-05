@@ -6,9 +6,9 @@
 namespace six_wheel_steering_controller {
 
     struct Twist {
-        double linX;
-        double linY;
-        double angZ;
+        double linX=0;
+        double linY=0;
+        double angZ=0;
     };
 
     struct OdometryInfo {

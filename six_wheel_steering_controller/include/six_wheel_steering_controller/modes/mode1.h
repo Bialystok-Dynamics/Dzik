@@ -8,8 +8,12 @@ namespace six_wheel_steering_controller {
     namespace modes{
         class Mode1 : public Mode{
 
+        public:
+            EModes modeCode() const override;
+
         protected:
             void doSetCommand(DriveInfo command) override;
+
         };
 
     }

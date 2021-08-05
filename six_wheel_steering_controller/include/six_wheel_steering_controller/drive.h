@@ -15,10 +15,11 @@ namespace six_wheel_steering_controller {
 
         void setMode(std::unique_ptr<Mode> mode);
         void setCommand(DriveInfo command);
+        void brake();
 
     private:
 
-        double _spacing;
+        double _yAxisSpacing;
         double _distanceToFront;
         double _distanceToRear;
         std::unique_ptr<Mode> _mode;
@@ -31,6 +32,8 @@ namespace six_wheel_steering_controller {
         std::unique_ptr<WheelUnit> _rearLeft;
 
     public:
+        const Mode * getCurrentMode() const;
+
         const std::unique_ptr<WheelUnit> &getFrontRight() const;
 
         void setFrontRight(std::unique_ptr<WheelUnit> frontRight);
@@ -55,9 +58,9 @@ namespace six_wheel_steering_controller {
 
         void setRearLeft(std::unique_ptr<WheelUnit> rearLeft);
 
-        double getSpacing() const;
+        double getY_AxisSpacing() const;
 
-        void setSpacing(double spacing);
+        void setY_AxisSpacing(double spacing);
 
         double getDistanceToFront() const;
 

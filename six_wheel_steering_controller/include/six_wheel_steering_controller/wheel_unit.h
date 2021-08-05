@@ -2,21 +2,27 @@
 #define SIX_WHEEL_STEERING_CONTROLLER_WHEEL_UNIT_H
 
 #include "common.h"
+#include <hardware_interface/joint_command_interface.h>
 
 namespace six_wheel_steering_controller{
 
     class WheelUnit {
     public:
 
-        WheelUnitInfo getInfo() const; // todo: implement
-        void setCommand(WheelUnitInfo command) const;
+        WheelUnit(hardware_interface::JointHandle steeringHandle, hardware_interface::JointHandle wheelHandle);
+        WheelUnitInfo getInfo() const;
+        void setCommand(WheelUnitInfo command);
 
 
     private:
+        hardware_interface::JointHandle _steeringHandle;
+        hardware_interface::JointHandle _wheelHandle;
         double _wheelRadius=0;
         double _angleMin=0;
         double _angleMax=0;
         double _rotationalSpeedMax=0;
+
+        WheelUnitInfo optimizeCommand(WheelUnitInfo command);
 
     public:
         double getWheelRadius() const;

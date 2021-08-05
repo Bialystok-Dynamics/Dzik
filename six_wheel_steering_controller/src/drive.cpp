@@ -9,14 +9,14 @@ namespace six_wheel_steering_controller {
         _mode->setDrive(this);
     }
 
-    double Drive::getSpacing() const {
-        return _spacing;
+    double Drive::getY_AxisSpacing() const {
+        return _yAxisSpacing;
     }
 
-    void Drive::setSpacing(double spacing) {
+    void Drive::setY_AxisSpacing(double spacing) {
         if (spacing < 0)
             throw std::runtime_error("Spacing have to be greater or equal to 0");
-        _spacing = spacing;
+        _yAxisSpacing = spacing;
     }
 
     double Drive::getDistanceToFront() const {
@@ -105,6 +105,21 @@ namespace six_wheel_steering_controller {
 
     void Drive::setRearLeft(std::unique_ptr<WheelUnit> rearLeft) {
         _rearLeft = std::move(rearLeft);
+    }
+
+    void Drive::brake() {
+        setCommand({
+            {0,0},
+            {0,0},
+            {0,0},
+            {0,0},
+            {0,0},
+            {0,0}
+        });
+    }
+
+    const Mode * Drive::getCurrentMode() const {
+        return _mode.get();
     }
 }
 

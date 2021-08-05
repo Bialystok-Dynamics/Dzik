@@ -31,5 +31,13 @@ namespace six_wheel_steering_controller {
             wheelUnit->setCommand(command);
         }
 
+        EModes Mode2::modeCode() const {
+            return EModes::Mode1;
+        }
+
+        Mode2::Mode2(double angleError): _maxAngleError(angleError) {
+
+        }
+
     }
 }

@@ -6,8 +6,8 @@
 
 namespace six_wheel_steering_controller {
 
-    namespace modes{
-        class Mode2 : Mode{
+    namespace modes {
+        class Mode2 : public Mode {
 
 
         protected:
@@ -17,6 +17,12 @@ namespace six_wheel_steering_controller {
             double _maxAngleError = 1e-3;
         public:
             double getMaxAngleError() const;
+
+            Mode2() = default;
+
+            Mode2(double angleError);
+
+            EModes modeCode() const override;
 
             void setMaxAngleError(double maxAngleError);
 
