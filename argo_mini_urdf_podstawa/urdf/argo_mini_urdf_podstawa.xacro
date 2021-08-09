@@ -85,14 +85,12 @@
         </collision>
     </link>
     <joint name="base_link_to_peripheral_base"
-            type="fixed">
+           type="fixed">
         <origin
                 xyz="0.19495 -0.0061284 0.0063061"
                 rpy="0 0 0"/>
-        <parent
-                link="base_link"/>
-        <child
-                link="peripheral_base"/>
+        <parent link="base_link"/>
+        <child link="peripheral_base"/>
         <axis
                 xyz="0 0 0"/>
         <limit
@@ -102,39 +100,36 @@
                 velocity="3.14"/>
     </joint>
 
-     <link
-    name="front_camera">
-    
-  </link>
-  <joint
-    name="front_camera_joint"
-    type="fixed">
-    <origin
-      xyz="0.29213 -0.0061284 -0.03"
-      rpy="-1.5708 0 -1.5708" />
-    <parent
-      link="base_link" />
-    <child
-      link="front_camera" />
-    <axis
-      xyz="0 0 0" />
-  </joint>
-  <link
-    name="rp_lidar_a1">
-  </link>
-  <joint
-    name="rp_lidar_a1_joint"
-    type="fixed">
-    <origin
-      xyz="0.23107 -0.0049901 -0.095067"
-      rpy="-3.1416 0 0" />
-    <parent
-      link="base_link" />
-    <child
-      link="rp_lidar_a1" />
-    <axis
-      xyz="0 0 0" />
-  </joint>
+    <link name="front_camera"/>
+
+    <joint name="front_camera_joint"
+            type="fixed">
+        <origin
+                xyz="0.29213 -0.0061284 -0.03"
+                rpy="0 0 0"
+        />
+        <!--                rpy="-1.5708 0 -1.5708"-->
+        <parent
+                link="base_link"/>
+        <child
+                link="front_camera"/>
+        <axis
+                xyz="0 0 0"/>
+    </joint>
+    <link name="rp_lidar_a1"/>
+    <joint
+            name="rp_lidar_a1_joint"
+            type="fixed">
+        <origin
+                xyz="0.23107 -0.0049901 -0.095067"
+                rpy="-3.1416 0 0"/>
+        <parent
+                link="base_link"/>
+        <child
+                link="rp_lidar_a1"/>
+        <axis
+                xyz="0 0 0"/>
+    </joint>
 
     <xacro:gazebo_corpse link="base_link"/>
 
@@ -152,4 +147,80 @@
             <robotNamespace>/argo_mini</robotNamespace>
         </plugin>
     </gazebo>
+
+    <gazebo reference="front_camera">
+        <material>Gazebo/Green</material>
+        <sensor type="camera" name="front_camera">
+            <update_rate>30.0</update_rate>
+            <camera name="front">
+                <horizontal_fov>1.3962634</horizontal_fov>
+                <image>
+                    <width>1920</width>
+                    <height>1080</height>
+                    <format>R8G8B8</format>
+                </image>
+                <clip>
+                    <near>0.1</near>
+                    <far>300</far>
+                </clip>
+                <noise>
+                    <type>gaussian</type>
+                    <mean>0.0</mean>
+                    <stddev>0.00</stddev>
+                </noise>
+            </camera>
+            <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+                <alwaysOn>true</alwaysOn>
+                <updateRate>0.0</updateRate>
+                <cameraName>/front</cameraName>
+                <imageTopicName>image_raw</imageTopicName>
+                <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+                <frameName>front_camera</frameName>
+                <hackBaseline>0.07</hackBaseline>
+                <distortionK1>0.0</distortionK1>
+                <distortionK2>0.0</distortionK2>
+                <distortionK3>0.0</distortionK3>
+                <distortionT1>0.0</distortionT1>
+                <distortionT2>0.0</distortionT2>
+            </plugin>
+        </sensor>
+    </gazebo>
+
+    <gazebo reference="rp_lidar_a1">
+        <material>Gazebo/Blue</material>
+        <sensor type="ray" name="head_hokuyo_sensor">
+            <pose>0 0 0 0 0 0</pose>
+            <visualize>true</visualize>
+            <update_rate>30</update_rate>
+            <ray>
+                <scan>
+                    <horizontal>
+                        <samples>720</samples>
+                        <resolution>1</resolution>
+                        <min_angle>-1.</min_angle>
+                        <max_angle>1.</max_angle>
+                    </horizontal>
+                </scan>
+                <range>
+                    <min>0.10</min>
+                    <max>15.0</max>
+                    <resolution>0.01</resolution>
+                </range>
+                <noise>
+                    <type>gaussian</type>
+                    <!-- Noise parameters based on published spec for Hokuyo laser
+                         achieving "+-30mm" accuracy at range < 10m.  A mean of 0.0m and
+                         stddev of 0.01m will put 99.7% of samples within 0.03m of the true
+                         reading. -->
+                    <mean>0.0</mean>
+                    <stddev>0.01</stddev>
+                </noise>
+            </ray>
+            <plugin name="gazebo_ros_head_hokuyo_controller" filename="libgazebo_ros_laser.so">
+                <topicName>/laser/scan</topicName>
+                <frameName>rp_lidar_a1</frameName>
+            </plugin>
+        </sensor>
+    </gazebo>
+
 </robot>
