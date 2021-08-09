@@ -102,6 +102,40 @@
                 velocity="3.14"/>
     </joint>
 
+     <link
+    name="front_camera">
+    
+  </link>
+  <joint
+    name="front_camera_joint"
+    type="fixed">
+    <origin
+      xyz="0.29213 -0.0061284 -0.03"
+      rpy="-1.5708 0 -1.5708" />
+    <parent
+      link="base_link" />
+    <child
+      link="front_camera" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="rp_lidar_a1">
+  </link>
+  <joint
+    name="rp_lidar_a1_joint"
+    type="fixed">
+    <origin
+      xyz="0.23107 -0.0049901 -0.095067"
+      rpy="-3.1416 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="rp_lidar_a1" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+
     <xacro:gazebo_corpse link="base_link"/>
 
     <xacro:property name="modules_config_file" value="$(find argo_mini_urdf_podstawa)/config/modules.yaml"/>
