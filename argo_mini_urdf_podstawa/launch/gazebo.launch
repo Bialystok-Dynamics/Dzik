@@ -26,7 +26,7 @@
 
   <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
         output="screen" ns="/argo_mini"
-        args="joint_state_controller"/>
+        args="joint_state_controller six_wheel_steering_controller "/>
 
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
         respawn="false" output="screen">
