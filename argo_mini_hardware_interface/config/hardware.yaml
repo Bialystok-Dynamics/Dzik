@@ -1,0 +1,21 @@
+argo_mini:
+  serial:
+    device: /dev/ttyS0
+    baudrate: 115200
+    write_frequency: 50
+
+  steering_joints:
+    front_left: front_left_wheel
+    front_right: front_right_wheel
+    mid_left: mid_left_wheel
+    mid_right: mid_right_wheel
+    rear_left: mid_left_wheel
+    rear_right: mid_right_wheel
+
+  wheel_joints:
+    front_left: front_left_turn
+    front_right: front_right_turn
+    mid_left: mid_left_turn
+    mid_right: mid_right_turn
+    rear_left: mid_left_turn
+    rear_right: mid_right_turn
