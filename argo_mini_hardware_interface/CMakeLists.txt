@@ -12,6 +12,7 @@ find_package(catkin REQUIRED COMPONENTS
   hardware_interface
   roscpp
   urdf
+  serial
 )
 
 ## System dependencies are found with CMake's conventions
@@ -98,7 +99,6 @@ include_directories(
  include
   ${catkin_INCLUDE_DIRS}
 )
-
 
  add_executable(${PROJECT_NAME}_node src/argo_mini_hardware_interface_node.cpp src/argo_mini_hardware_interface.cpp)
 

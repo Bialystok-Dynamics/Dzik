@@ -64,6 +64,7 @@
   <exec_depend>ros_control</exec_depend>
   <exec_depend>roscpp</exec_depend>
   <exec_depend>urdf</exec_depend>
+  <build_depend>serial</build_depend>
 
 
   <!-- The export tag contains other, unspecified, tags -->

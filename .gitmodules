@@ -1,3 +1,6 @@
 [submodule "zed-ros-wrapper"]
 	path = zed-ros-wrapper
 	url = https://github.com/stereolabs/zed-ros-wrapper.git
+[submodule "serial"]
+	path = serial
+	url = https://github.com/wjwwood/serial.git

@@ -2,9 +2,11 @@ argo_mini:
   serial:
     device: /dev/ttyS0
     baudrate: 115200
-    write_frequency: 50
+    write_frequency: 50. # rate at which commands are sent [Hz]
+    wheel_command_coeff: 10. # coefficient by which demanded velocity of wheel is multiplied before sending [(rad/s)^-1]
+    steer_command_coeff: 30. # coefficient by which demanded steering angle is multiplied before sending [rad^-1]
 
-  steering_joints:
+  steering_joints: # handle names
     front_left: front_left_wheel
     front_right: front_right_wheel
     mid_left: mid_left_wheel

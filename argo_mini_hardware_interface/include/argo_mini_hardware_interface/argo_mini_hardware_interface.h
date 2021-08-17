@@ -4,6 +4,7 @@
 #include <hardware_interface/robot_hw.h>
 #include <hardware_interface/joint_state_interface.h>
 #include <hardware_interface/joint_command_interface.h>
+#include <serial/serial.h>
 
 #include <utility>
 
@@ -21,11 +22,15 @@ namespace argo_mini_hardware_interface {
         void write(const ros::Time &time, const ros::Duration &duration) override;
 
     private:
+        std::vector<uint8_t> getDataToWrite() const;
+
         bool initSerial(ros::NodeHandle &privateNh);
 
         bool registerHandles(ros::NodeHandle &privateNh);
 
         std::string name_;
+
+        std::unique_ptr<serial::Serial> serial_;
 
         hardware_interface::JointStateInterface jointStateInterface;
         hardware_interface::PositionJointInterface positionJointInterface;
@@ -47,6 +52,8 @@ namespace argo_mini_hardware_interface {
             double rearRightWheel;
         } commands, velocities, positions, efforts;
 
+        double wheelCommandCoefficient_;
+        double steerCommandCoefficient_;
 
         class SerialTimer {
         public:
