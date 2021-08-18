@@ -11,13 +11,12 @@ public:
     TimerCallback(AMHI::HardwareInterface *robot, controller_manager::ControllerManager *cm) :
             robot_{robot}, controllerManager_{cm} {}
 
-    void operator()(const ros::SteadyTimerEvent &e) {
+    void operator()(const ros::TimerEvent &e) {
         assert(robot_ && controllerManager_);
-        const auto &currentTime = ros::Time(e.current_real.toSec());
-        const auto &period = ros::Duration((e.current_real - e.last_real).toSec());
-        robot_->read(currentTime, period);
-        controllerManager_->update(currentTime, period);
-        robot_->write(currentTime, period);
+        const auto &period = e.current_real - e.last_real;
+        robot_->read(e.current_real, period);
+        controllerManager_->update(e.current_real, period);
+        robot_->write(e.current_real, period);
     }
 
 private:
@@ -37,12 +36,9 @@ int main(int argc, char **argv) {
     if (!robot.init(nh, privateNh)) return EXIT_FAILURE;
     controller_manager::ControllerManager cm(&robot, nh);
 
-    auto timer = nh.createSteadyTimer(ros::WallRate(50).expectedCycleTime(), TimerCallback(&robot, &cm));
+    auto timer = privateNh.createTimer(ros::Duration(ros::Rate(50)), TimerCallback(&robot, &cm));
 
-    ros::CallbackQueue q;
-    nh.setCallbackQueue(&q);
-    ros::AsyncSpinner spinner(2, &q);
-
+    ros::AsyncSpinner spinner(4); // Use 4 threads
     spinner.start();
     ros::waitForShutdown();
 }

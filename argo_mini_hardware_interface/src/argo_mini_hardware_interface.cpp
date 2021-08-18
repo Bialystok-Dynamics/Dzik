@@ -60,14 +60,14 @@ namespace argo_mini_hardware_interface {
 
         try {
             serial_ = std::make_unique<serial::Serial>(
-                    serialPath, (uint32_t) baudrate, serial::Timeout::simpleTimeout(50));
+                    serialDev, (uint32_t) baudrate, serial::Timeout::simpleTimeout(50));
         } catch (const serial::PortNotOpenedException &e) {
             ROS_ERROR_STREAM_NAMED(name_, "Serial port opening exception: " << e.what());
             return false;
         } catch (const std::invalid_argument &e) {
             ROS_ERROR_STREAM_NAMED(name_, "Serial invalid argument: " << e.what());
             return false;
-        } catch (const serial::IOException &e) {
+        } catch (const std::exception &e) {
             ROS_ERROR_STREAM_NAMED(name_, "Serial exception: " << e.what());
             return false;
         }
@@ -112,7 +112,7 @@ namespace argo_mini_hardware_interface {
 
     bool HardwareInterface::registerHandles(ros::NodeHandle &privateNh) {
         std::string jointNameCache;
-        hardware_interface::JointStateHandle handleCache;
+        hardware_interface::JointStateHandle stateHandleCache;
 
 #define TRY_GET_JOINT_NAME(jointNameParam)\
                 if(!privateNh.getParam(jointNameParam, jointNameCache)){      \
@@ -122,17 +122,17 @@ namespace argo_mini_hardware_interface {
 
 #define TRY_REGISTER_POSITION_HANDLE(jointNameParam, field) \
                 TRY_GET_JOINT_NAME(jointNameParam) \
-                handleCache = hardware_interface::JointStateHandle(jointNameCache, &positions.field, &velocities.field, &efforts.field); \
-                jointStateInterface.registerHandle(handleCache); \
-                positionJointInterface.registerHandle(hardware_interface::JointHandle(handleCache,&commands.field)); \
-                ROS_INFO_STREAM_NAMED(name_, "Registered handles for position steered joint: "<< handleCache.getName());
+                stateHandleCache = hardware_interface::JointStateHandle(jointNameCache, &positions.field, &velocities.field, &efforts.field); \
+                jointStateInterface.registerHandle(stateHandleCache); \
+                positionJointInterface.registerHandle(hardware_interface::JointHandle(stateHandleCache,&commands.field)); \
+                ROS_INFO_STREAM_NAMED(name_, "Registered handles for position steered joint: "<< stateHandleCache.getName());
 
 #define TRY_REGISTER_VELOCITY_HANDLE(jointNameParam, field) \
                 TRY_GET_JOINT_NAME(jointNameParam) \
-                handleCache = hardware_interface::JointStateHandle(jointNameCache, &positions.field, &velocities.field, &efforts.field); \
-                jointStateInterface.registerHandle(handleCache); \
-                velocityJointInterface.registerHandle(hardware_interface::JointHandle(handleCache,&commands.field)); \
-                ROS_INFO_STREAM_NAMED(name_, "Registered handles for velocity steered joint: "<< handleCache.getName());
+                stateHandleCache = hardware_interface::JointStateHandle(jointNameCache, &positions.field, &velocities.field, &efforts.field); \
+                jointStateInterface.registerHandle(stateHandleCache); \
+                velocityJointInterface.registerHandle(hardware_interface::JointHandle(stateHandleCache,&commands.field)); \
+                ROS_INFO_STREAM_NAMED(name_, "Registered handles for velocity steered joint: "<< stateHandleCache.getName());
 
         TRY_REGISTER_POSITION_HANDLE("argo_mini/steering_joints/front_left", frontLeftSteer)
         TRY_REGISTER_POSITION_HANDLE("argo_mini/steering_joints/front_right", frontRightSteer)
