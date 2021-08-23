@@ -1,5 +1,5 @@
 #include "six_wheel_steering_controller/kinematics.h"
-#include "math/vector.h"
+#include "six_wheel_steering_controller/math/vector.h"
 #include <cmath>
 
 namespace six_wheel_steering_controller {

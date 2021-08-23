@@ -189,14 +189,14 @@ namespace six_wheel_steering_controller {
             _tfPub.init(rootNH, "/tf", 50);
 
             _tfPub.msg_.transforms.resize(1);
-            _tfPub.msg_.transforms[0].header.frame_id = _baseFrameId;
-            _tfPub.msg_.transforms[0].child_frame_id = "odom";
+            _tfPub.msg_.transforms[0].header.frame_id = "odom";
+            _tfPub.msg_.transforms[0].child_frame_id = _baseFrameId;
             _tfPub.msg_.transforms[0].transform.translation.z = 0;
         }
 
         ROS_INFO_STREAM_NAMED(_name,
                               "publish_rate: " << pubRate << "\n"
-                                               << "enable_odom_tf: " << _tf2OdomEnable << "\n"
+                                               << "enable_odom_tf: " << (_tf2OdomEnable ? "true" : "false") << "\n"
         );
         return true;
     }

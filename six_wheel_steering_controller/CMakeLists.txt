@@ -56,7 +56,8 @@ add_library(${PROJECT_NAME}
         src/odometry.cpp
         src/modes/mode1.cpp
         src/modes/mode2.cpp
-        src/math/vector.cpp)
+        src/math/vector.cpp
+        src/math/point.cpp)
 
 target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES})
 

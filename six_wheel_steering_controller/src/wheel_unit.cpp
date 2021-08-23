@@ -46,6 +46,8 @@ namespace six_wheel_steering_controller {
 
     }
 
+    ///
+    /// \return info: \b angle [radians]; \b speed [m/s]
     WheelUnitInfo WheelUnit::getInfo() const {
         return {_steeringHandle.getPosition(), _wheelHandle.getVelocity() * _wheelRadius};
     }
