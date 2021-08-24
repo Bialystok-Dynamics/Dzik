@@ -15,7 +15,7 @@
                command="$(find xacro)/xacro $(find argo_mini_urdf_podstawa)/urdf/argo_mini_urdf_podstawa.xacro"/>
 
         <node name="tf_footprint_base" pkg="tf" type="static_transform_publisher"
-                args="0 0 0 0 0 0 base_link base_footprint 40"/>
+              args="0 0 0 0 0 0 base_link base_footprint 40"/>
 
         <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
               args="joint_state_controller six_wheel_steering_controller"/>
@@ -43,7 +43,15 @@
                 <param name="frame_id" type="string" value="rp_lidar_a1"/>
                 <param name="inverted" type="bool" value="false"/>
                 <param name="angle_compensate" type="bool" value="true"/>
+
+                <remap from="scan" to="laser/scan"/>
             </node>
         </group>
+
+        <node pkg="laser_filters" type="scan_to_scan_filter_chain" name="laser_filter">
+            <rosparam command="load" file="$(find argo_mini)/config/laser_filter_config.yaml"/>
+            <remap from="scan" to="laser/scan"/>
+            <remap from="scan_filtered" to="laser/scan/filtered"/>
+        </node>
     </group>
 </launch>
