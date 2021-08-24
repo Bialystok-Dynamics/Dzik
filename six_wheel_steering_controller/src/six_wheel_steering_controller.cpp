@@ -62,7 +62,7 @@ namespace six_wheel_steering_controller {
         _drive->brake();
     }
 
-    void SixWheelSteeringController::waiting(const ros::Time &time1) {
+    void SixWheelSteeringController::waiting(const ros::Time &time) {
     }
 
     void SixWheelSteeringController::aborting(const ros::Time &time) {
@@ -77,6 +77,7 @@ namespace six_wheel_steering_controller {
         auto id = complete_ns.find_last_of('/');
         _name = complete_ns.substr(id + 1);
 
+        _helloMessage << "six_wheel_steering_controller started with following parameteres:\n";
         if (!initDrive(hw, rootNH, controllerNH)) return false;
         if (!initOdom(rootNH, controllerNH))return false;
 
@@ -86,6 +87,9 @@ namespace six_wheel_steering_controller {
 
         _modeChangeServiceServer = controllerNH.advertiseService("mode_change",
                                                                  &SixWheelSteeringController::modeChangeCallback, this);
+
+        ROS_ERROR_STREAM_NAMED(_name, _helloMessage.str());
+        _helloMessage.clear();
         return true;
     }
 
@@ -194,10 +198,8 @@ namespace six_wheel_steering_controller {
             _tfPub.msg_.transforms[0].transform.translation.z = 0;
         }
 
-        ROS_INFO_STREAM_NAMED(_name,
-                              "publish_rate: " << pubRate << "\n"
-                                               << "enable_odom_tf: " << (_tf2OdomEnable ? "true" : "false") << "\n"
-        );
+        _helloMessage << "publish_rate: " << pubRate << "\n"
+                      << "enable_odom_tf: " << (_tf2OdomEnable ? "true" : "false") << "\n";
         return true;
     }
 
@@ -252,7 +254,7 @@ namespace six_wheel_steering_controller {
         if (obtainY_Spacing) {
 
             if (!ugp.getDistanceBetweenJoints(frontLeftSteeringJointName, frontRightSteeringJointName, ySpacing)) {
-                ROS_ERROR_STREAM_NAMED("Init", "Couldn't obtain y_spacing. Aborting...");
+                ROS_ERROR_STREAM_NAMED(_name + "/init", "Couldn't obtain y_spacing. Aborting...");
                 return false;
             } else {
                 controllerNH.setParam("y_spacing", ySpacing);
@@ -262,7 +264,7 @@ namespace six_wheel_steering_controller {
         if (obtainMidToFront) {
 
             if (!ugp.getDistanceBetweenJoints(frontLeftSteeringJointName, midLeftSteeringJointName, midToFront)) {
-                ROS_ERROR_STREAM_NAMED("Init", "Couldn't obtain mid_to_front parameter. Aborting...");
+                ROS_ERROR_STREAM_NAMED(_name + "/init", "Couldn't obtain mid_to_front parameter. Aborting...");
                 return false;
 
             } else {
@@ -272,7 +274,7 @@ namespace six_wheel_steering_controller {
         if (obtainMidToRear) {
 
             if (!ugp.getDistanceBetweenJoints(rearLeftSteeringJointName, midLeftSteeringJointName, midToRear)) {
-                ROS_ERROR_STREAM_NAMED("Init", "Couldn't obtain mid_to_rear parameter. Aborting...");
+                ROS_ERROR_STREAM_NAMED(_name + "/init", "Couldn't obtain mid_to_rear parameter. Aborting...");
                 return false;
             } else {
                 controllerNH.setParam("mid_to_rear", midToRear);
@@ -281,7 +283,7 @@ namespace six_wheel_steering_controller {
         if (obtainWheelRadius) {
 
             if (!ugp.getJointRadius(frontLeftWheelJointName, wheelRadius)) {
-                ROS_ERROR_STREAM_NAMED("Init", "Couldn't obtain wheel_radius parameter. Aborting...");
+                ROS_ERROR_STREAM_NAMED(_name + "/init", "Couldn't obtain wheel_radius parameter. Aborting...");
                 return false;
             } else {
                 controllerNH.setParam("wheel_radius", wheelRadius);
@@ -303,7 +305,7 @@ namespace six_wheel_steering_controller {
         _mode2AngleError = controllerNH.param("mode2_angle_error", 1e-3);
 
 
-        ROS_INFO_STREAM_NAMED(_name, "six_wheel_steering_controller started with following parameteres:\n"
+        _helloMessage
                 << "base_frame_id: " << _baseFrameId << "\n"
                 << "steering joints:\n"
                 << "- " << frontLeftSteeringJointName << "\n"
@@ -312,7 +314,7 @@ namespace six_wheel_steering_controller {
                 << "- " << midRightSteeringJointName << "\n"
                 << "- " << rearLeftSteeringJointName << "\n"
                 << "- " << rearRightSteeringJointName << "\n"
-                << "wheel_joints:"
+                << "wheel_joints:\n"
                 << "- " << frontLeftWheelJointName << "\n"
                 << "- " << frontRightWheelJointName << "\n"
                 << "- " << midLeftWheelJointName << "\n"
@@ -322,8 +324,7 @@ namespace six_wheel_steering_controller {
                 << "mid_to_front_distance: " << midToFront << "\n"
                 << "mid_to_rear_distance: " << midToRear << "\n"
                 << "y_spacing: " << ySpacing << "\n"
-                << "wheel_radius: " << wheelRadius
-        );
+                << "wheel_radius: " << wheelRadius;
         return true;
     }
 }

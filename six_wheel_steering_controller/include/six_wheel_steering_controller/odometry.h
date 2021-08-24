@@ -14,21 +14,25 @@ namespace six_wheel_steering_controller {
 
         ~Odometry() = default;
 
+        ///
+        /// \param dt time since last call [s]
+        /// \return odometry info
         OdometryInfo getOdometry(double dt) const;
 
 
     private:
         std::shared_ptr<Drive> _drive;
 
-        mutable math::Point pw1;
-        mutable math::Point pw2;
-        mutable math::Point pw3;
-        mutable math::Point pw4;
-        mutable math::Point pw5;
-        mutable math::Point pw6;
+        mutable math::Point _pw1;
+        mutable math::Point _pw2;
+        mutable math::Point _pw3;
+        mutable math::Point _pw4;
+        mutable math::Point _pw5;
+        mutable math::Point _pw6;
 
-        mutable math::Point baseLinkPosition{};
-        mutable double baseLinkYaw =0.;
+        mutable math::Point _baseLinkPosition{};
+        mutable double _baseLinkYaw =0.;
+
     };
 
 }

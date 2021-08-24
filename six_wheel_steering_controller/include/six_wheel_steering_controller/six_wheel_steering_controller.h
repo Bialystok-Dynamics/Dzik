@@ -14,6 +14,7 @@
 #include <geometry_msgs/Twist.h>
 #include <six_wheel_steering_msgs/ModeChange.h>
 #include <tf/tfMessage.h>
+#include <sstream>
 
 namespace six_wheel_steering_controller{
 
@@ -36,6 +37,7 @@ namespace six_wheel_steering_controller{
 
     private:
         std::string _name;
+        std::stringstream _helloMessage;
 
         std::unique_ptr<Kinematics> _kinematics;
         std::unique_ptr<Odometry> _odometry;

@@ -16,12 +16,12 @@ namespace six_wheel_steering_controller {
         double df = _drive->getDistanceToFront();
         double dr = _drive->getDistanceToRear();
 
-        pw1 = math::Point(df, dy_2);
-        pw2 = math::Point(df, -dy_2);
-        pw3 = math::Point(0, dy_2);
-        pw4 = math::Point(0, -dy_2);
-        pw5 = math::Point(-dr, dy_2);
-        pw6 = math::Point(-dr, -dy_2);
+        _pw1 = math::Point(df, dy_2);
+        _pw2 = math::Point(df, -dy_2);
+        _pw3 = math::Point(0, dy_2);
+        _pw4 = math::Point(0, -dy_2);
+        _pw5 = math::Point(-dr, dy_2);
+        _pw6 = math::Point(-dr, -dy_2);
     }
 
     OdometryInfo six_wheel_steering_controller::Odometry::getOdometry(double dt) const {
@@ -38,12 +38,12 @@ namespace six_wheel_steering_controller {
         const auto vw5 = getVectorFromWheelUnit(*_drive->getRearLeft());
         const auto vw6 = getVectorFromWheelUnit(*_drive->getRearRight());
 
-        pw1 += vw1 * dt;
-        pw2 += vw2 * dt;
-        pw3 += vw3 * dt;
-        pw4 += vw4 * dt;
-        pw5 += vw5 * dt;
-        pw6 += vw6 * dt;
+        _pw1 += vw1 * dt;
+        _pw2 += vw2 * dt;
+        _pw3 += vw3 * dt;
+        _pw4 += vw4 * dt;
+        _pw5 += vw5 * dt;
+        _pw6 += vw6 * dt;
 
         // mean rotational velocity
         double vzrm = (-vw1 + vw2 - vw3 + vw4 - vw5 + vw6).x / ySpacing / 3;
@@ -83,15 +83,15 @@ namespace six_wheel_steering_controller {
         vxmVariance += std::pow(vxm - (vw6.x - vzrm * ySpacing_2), 2);
         vxmVariance /= 6;
 
-        auto velocityVector = math::Vector(vxm, vym).rotate(baseLinkYaw);
-        baseLinkPosition += velocityVector*dt;
-        baseLinkYaw += vzrm*dt;
+        auto velocityVector = math::Vector(vxm, vym).rotate(_baseLinkYaw);
+        _baseLinkPosition += velocityVector * dt;
+        _baseLinkYaw += vzrm * dt;
 
         OdometryInfo ret;
 
-        ret.x = baseLinkPosition.x;
-        ret.y = baseLinkPosition.y;
-        ret.yaw = baseLinkYaw;
+        ret.x = _baseLinkPosition.x;
+        ret.y = _baseLinkPosition.y;
+        ret.yaw = _baseLinkYaw;
 
         ret.vX = vxm;
         ret.vY = vym;
