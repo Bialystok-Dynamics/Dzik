@@ -1,0 +1,49 @@
+<launch>
+    <arg name="simulation" default="false"/>
+    <arg name="rviz" default="true"/>
+
+    <include file="$(find aws_robomaker_small_warehouse_world)/launch/magazyn_z_18_tagami.launch"
+             if="$(arg simulation)"/>
+
+    <node name="rviz" pkg="rviz" type="rviz" if="$(arg rviz)" args="-d $(find argo_mini)/rviz/rviz.rviz"/>
+
+    <rosparam file="$(find argo_mini)/config/controllers_info.yaml"/>
+    <rosparam file="$(find argo_mini)/config/hardware.yaml" unless="$(arg simulation)"/>
+
+    <group ns="argo_mini">
+        <param name="robot_description"
+               command="$(find xacro)/xacro $(find argo_mini_urdf_podstawa)/urdf/argo_mini_urdf_podstawa.xacro"/>
+
+        <node name="tf_footprint_base" pkg="tf" type="static_transform_publisher"
+                args="0 0 0 0 0 0 base_link base_footprint 40"/>
+
+        <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
+              args="joint_state_controller six_wheel_steering_controller"/>
+
+        <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
+              respawn="false" output="screen"/>
+
+        <group if="$(arg simulation)">
+
+            <node name="spawn_model" pkg="gazebo_ros" type="spawn_model"
+                  args="-param '/argo_mini/robot_description' -urdf -model argo_mini -z 0.275"/>
+        </group>
+
+        <group unless="$(arg simulation)">
+            <!--            TODO: add env-loader-->
+            <machine name="argo_mini" address="argo-mini.wlan" user="argo" password="argoteam" env-loader=""/>
+
+            <node name="hardware_interface_node" pkg="argo_mini_hardware_interface" type="node" machine="argo_mini">
+                <rosparam command="load" file="$(find argo_mini)/config/hardware.yaml"/>
+            </node>
+
+            <node name="rplidar_node" pkg="rplidar_ros" type="rplidarNode" machine="argo_mini">
+                <param name="serial_port" type="string" value="/dev/ttyUSB0"/>
+                <param name="serial_baudrate" type="int" value="115200"/>
+                <param name="frame_id" type="string" value="rp_lidar_a1"/>
+                <param name="inverted" type="bool" value="false"/>
+                <param name="angle_compensate" type="bool" value="true"/>
+            </node>
+        </group>
+    </group>
+</launch>
