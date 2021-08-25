@@ -172,10 +172,10 @@
             <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
                 <alwaysOn>true</alwaysOn>
                 <updateRate>0.0</updateRate>
-                <cameraName>/front</cameraName>
-                <imageTopicName>image_raw</imageTopicName>
+                <cameraName>/front_camera</cameraName>
+                <imageTopicName>image</imageTopicName>
                 <cameraInfoTopicName>camera_info</cameraInfoTopicName>
-                <frameName>front_camera</frameName>
+                <frameName>/front_camera</frameName>
                 <hackBaseline>0.07</hackBaseline>
                 <distortionK1>0.0</distortionK1>
                 <distortionK2>0.0</distortionK2>

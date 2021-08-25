@@ -88,7 +88,7 @@ namespace six_wheel_steering_controller {
         _modeChangeServiceServer = controllerNH.advertiseService("mode_change",
                                                                  &SixWheelSteeringController::modeChangeCallback, this);
 
-        ROS_ERROR_STREAM_NAMED(_name, _helloMessage.str());
+        ROS_INFO_STREAM_NAMED(_name, _helloMessage.str());
         _helloMessage.clear();
         return true;
     }
