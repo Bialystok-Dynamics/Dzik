@@ -21,7 +21,7 @@
               args="joint_state_controller six_wheel_steering_controller"/>
 
         <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
-              respawn="false" output="screen"/>
+              respawn="false"/>
 
         <group if="$(arg simulation)">
 
@@ -38,6 +38,7 @@
             </node>
 
             <node name="rplidar_node" pkg="rplidar_ros" type="rplidarNode" machine="argo_mini">
+
                 <param name="serial_port" type="string" value="/dev/ttyUSB0"/>
                 <param name="serial_baudrate" type="int" value="115200"/>
                 <param name="frame_id" type="string" value="rp_lidar_a1"/>
@@ -46,9 +47,17 @@
 
                 <remap from="scan" to="laser/scan"/>
             </node>
+
+            <node name="front_camera_node" type="ipcamera_driver" pkg="ipcamera_driver">
+                <param name="video_url" value="http://argo-mini.wlan:8080/?action=stream"/>
+                <param name="frame_id" value="front_camera"/>
+
+                <remap from="/camera/image" to="front_camera/image"/>
+            </node>
         </group>
 
-        <node pkg="laser_filters" type="scan_to_scan_filter_chain" name="laser_filter">
+        <node pkg="laser_filters" type="scan_to_scan_filter_chain" name="laser_filter"
+              machine="$(eval '' if arg('simulation') else 'argo_mini')">
             <rosparam command="load" file="$(find argo_mini)/config/laser_filter_config.yaml"/>
             <remap from="scan" to="laser/scan"/>
             <remap from="scan_filtered" to="laser/scan/filtered"/>
