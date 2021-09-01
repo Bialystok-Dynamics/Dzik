@@ -17,6 +17,7 @@ namespace six_wheel_steering_controller {
         Command *currentCommand = _currentCommand.readFromRT();
         if ((time - currentCommand->stamp).toSec() > _cmdVelTimeout) {
             _drive->brake();
+            ROS_DEBUG_STREAM_NAMED(_name,"Discarding outdated cmd_vel message.");
         } else {
             _kinematics->setVelocity(currentCommand->twist);
         }

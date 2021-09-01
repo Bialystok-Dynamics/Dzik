@@ -18,20 +18,21 @@
               args="0 0 0 0 0 0 base_link base_footprint 40"/>
 
         <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
-              args="joint_state_controller six_wheel_steering_controller"/>
+        args="joint_state_controller six_wheel_steering_controller" />
 
         <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
-              respawn="false"/>
+        respawn="false"/>
 
         <group if="$(arg simulation)">
 
             <node name="spawn_model" pkg="gazebo_ros" type="spawn_model"
-                  args="-param '/argo_mini/robot_description' -urdf -model argo_mini -z 0.275"/>
+            args="-param '/argo_mini/robot_description' -urdf -model argo_mini -z 0.275"/>
         </group>
 
         <group unless="$(arg simulation)">
-            <!--            TODO: add env-loader-->
-            <machine name="argo_mini" address="argo-mini.wlan" user="argo" password="argoteam" env-loader=""/>
+
+            <machine name="argo_mini" address="argo-mini.wlan" user="argo" password="argoteam"
+            env-loader="/home/argo/argo_mini_startup_ws/env.sh"/>
 
             <node name="hardware_interface_node" pkg="argo_mini_hardware_interface" type="node" machine="argo_mini">
                 <rosparam command="load" file="$(find argo_mini)/config/hardware.yaml"/>
@@ -50,7 +51,7 @@
 
             <node name="front_camera_node" type="ipcamera_driver" pkg="ipcamera_driver">
                 <param name="video_url" value="http://argo-mini.wlan:8080/?action=stream"/>
-                <param name="frame_id" value="front_camera"/>
+                <param name="frame_id" value="front_camera_z"/>
 
                 <remap from="/camera/image" to="front_camera/image"/>
             </node>
@@ -62,5 +63,7 @@
             <remap from="scan" to="laser/scan"/>
             <remap from="scan_filtered" to="laser/scan/filtered"/>
         </node>
+
+        <include file="$(find argo_mini)/launch/joy_steering.launch"/>
     </group>
 </launch>
