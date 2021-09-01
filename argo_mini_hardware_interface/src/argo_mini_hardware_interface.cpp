@@ -1,5 +1,5 @@
 #include <argo_mini_hardware_interface/argo_mini_hardware_interface.h>
-
+#include "ostream"
 
 namespace argo_mini_hardware_interface {
 
@@ -21,7 +21,26 @@ namespace argo_mini_hardware_interface {
 
     void HardwareInterface::write(const ros::Time &time, const ros::Duration &duration) {
         if (serialTimer_.timeForWrite(time)) {
-            serial_->write(getDataToWrite());
+            const auto &data = getDataToWrite();
+            std::stringstream ss;
+            std::copy(data.begin(), data.end(), std::ostream_iterator<int>(ss << std::hex, " "));
+            ROS_DEBUG_STREAM_THROTTLE_NAMED(0.1, "received_commands",
+                                            "Received following commands:"
+                                            "\n-frontLeftSteer: " << commands.frontLeftSteer <<
+                                                                  "\n-frontLeftWheel: " << commands.frontLeftWheel <<
+                                                                  "\n-frontRightSteer: " << commands.frontRightSteer <<
+                                                                  "\n-frontRightWheel: " << commands.frontRightWheel <<
+                                                                  "\n-midLeftSteer: " << commands.midLeftSteer <<
+                                                                  "\n-midLeftWheel: " << commands.midLeftWheel <<
+                                                                  "\n-midRightSteer: " << commands.midRightSteer <<
+                                                                  "\n-midRightWheel: " << commands.midRightWheel <<
+                                                                  "\n-rearLeftSteer: " << commands.rearLeftSteer <<
+                                                                  "\n-rearLeftWheel: " << commands.rearLeftWheel <<
+                                                                  "\n-rearRightSteer: " << commands.rearRightSteer <<
+                                                                  "\n-rearRightWheel: " << commands.rearRightWheel
+            );
+            ROS_DEBUG_STREAM_THROTTLE_NAMED(0.1, "serial_comm", "Sending frame: " << ss.str());
+            serial_->write(data);
         }
     }
 
@@ -85,29 +104,29 @@ namespace argo_mini_hardware_interface {
 
     std::vector<uint8_t> HardwareInterface::getDataToWrite() const {
         auto getWheelCommand = [this](double velocity) {
-            double ret = velocity * wheelCommandCoefficient_;
-            return (uint8_t) (ret > 100 ? 100 : ret < -100 ? -100 : ret);
+            auto ret = (int)(velocity * wheelCommandCoefficient_);
+            return (uint8_t) (ret > 100 ? 100 : (ret < -100 ? -100 : ret));
         };
 
         auto getSteerCommand = [this](double angle) {
-            double ret = angle * steerCommandCoefficient_;
-            return (uint8_t) (ret > 100 ? 100 : ret < -100 ? -100 : ret);
+            auto ret = (int)(angle * steerCommandCoefficient_);
+            return (uint8_t) (ret > 100 ? 100 : (ret < -100 ? -100 : ret));
         };
 
-        return std::vector<uint8_t>{0xef,
-                getWheelCommand(commands.frontLeftWheel),
-                getSteerCommand(commands.frontLeftSteer),
-                getWheelCommand(commands.frontRightWheel),
-                getSteerCommand(commands.frontRightSteer),
-                getWheelCommand(commands.midLeftWheel),
-                getSteerCommand(commands.midLeftSteer),
-                getWheelCommand(commands.midRightWheel),
-                getSteerCommand(commands.midRightSteer),
-                getWheelCommand(commands.rearLeftWheel),
-                getSteerCommand(commands.rearLeftSteer),
-                getWheelCommand(commands.rearRightWheel),
-                getSteerCommand(commands.rearRightSteer),
-                0xef};
+        return std::vector<uint8_t>{0x9B,
+                                    getWheelCommand(commands.frontLeftWheel),
+                                    getSteerCommand(commands.frontLeftSteer),
+                                    getWheelCommand(commands.frontRightWheel),
+                                    getSteerCommand(commands.frontRightSteer),
+                                    getWheelCommand(commands.midLeftWheel),
+                                    getSteerCommand(commands.midLeftSteer),
+                                    getWheelCommand(commands.midRightWheel),
+                                    getSteerCommand(commands.midRightSteer),
+                                    getWheelCommand(commands.rearLeftWheel),
+                                    getSteerCommand(commands.rearLeftSteer),
+                                    getWheelCommand(commands.rearRightWheel),
+                                    getSteerCommand(commands.rearRightSteer),
+                                    0x65};
     }
 
     bool HardwareInterface::registerHandles(ros::NodeHandle &privateNh) {

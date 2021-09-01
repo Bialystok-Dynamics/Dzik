@@ -37,7 +37,6 @@ int main(int argc, char **argv) {
     controller_manager::ControllerManager cm(&robot, nh);
 
     auto timer = privateNh.createTimer(ros::Duration(ros::Rate(50)), TimerCallback(&robot, &cm));
-
     ros::AsyncSpinner spinner(4); // Use 4 threads
     spinner.start();
     ros::waitForShutdown();
