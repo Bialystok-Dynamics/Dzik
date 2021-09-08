@@ -1,6 +1,8 @@
 <launch>
     <arg name="simulation" default="false"/>
     <arg name="rviz" default="true"/>
+    <arg name="peripheral" default=""/>
+    <arg name="drive" default="6w"/>
 
     <include file="$(find aws_robomaker_small_warehouse_world)/launch/magazyn_z_18_tagami.launch"
              if="$(arg simulation)"/>
@@ -11,28 +13,36 @@
     <rosparam file="$(find argo_mini)/config/hardware.yaml" unless="$(arg simulation)"/>
 
     <group ns="argo_mini">
+        <arg name="_drive" value="argo_mini_urdf_6w_drive" unless="$(eval drive=='4w')"/>
+        <arg name="_drive" value="argo_mini_urdf_4w_drive" if="$(eval drive=='4w')"/>
+
+        <arg name="_peripheral" value="" unless="$(eval peripheral == 'zed')"/>
+        <arg name="_peripheral" value="argo_mini_urdf_zed_gimbal" if="$(eval peripheral == 'zed')"/>
+
         <param name="robot_description"
-               command="$(find xacro)/xacro $(find argo_mini_urdf_podstawa)/urdf/argo_mini_urdf_podstawa.xacro"/>
+               command="$(find xacro)/xacro $(find argo_mini_urdf_podstawa)/urdf/argo_mini_urdf_podstawa.xacro
+               drive:=$(arg _drive)
+               peripheral:=$(arg _peripheral)"/>
 
         <node name="tf_footprint_base" pkg="tf" type="static_transform_publisher"
               args="0 0 0 0 0 0 base_link base_footprint 40"/>
 
         <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
-        args="joint_state_controller six_wheel_steering_controller" />
+              args="joint_state_controller six_wheel_steering_controller"/>
 
         <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
-        respawn="false"/>
+              respawn="false"/>
 
         <group if="$(arg simulation)">
 
             <node name="spawn_model" pkg="gazebo_ros" type="spawn_model"
-            args="-param '/argo_mini/robot_description' -urdf -model argo_mini -z 0.275"/>
+                  args="-param '/argo_mini/robot_description' -urdf -model argo_mini -z 0.275"/>
         </group>
 
         <group unless="$(arg simulation)">
 
             <machine name="argo_mini" address="argo-mini.wlan" user="argo" password="argoteam"
-            env-loader="/home/argo/argo_mini_startup_ws/env.sh"/>
+                     env-loader="/home/argo/argo_mini_startup_ws/env.sh"/>
 
             <node name="hardware_interface_node" pkg="argo_mini_hardware_interface" type="node" machine="argo_mini">
                 <rosparam command="load" file="$(find argo_mini)/config/hardware.yaml"/>
@@ -54,6 +64,17 @@
                 <param name="frame_id" value="front_camera_z"/>
 
                 <remap from="/camera/image" to="front_camera/image"/>
+            </node>
+
+            <node name="zed_node" pkg="zed_wrapper" type="zed_wrapper_node" machine="argo_mini"
+                  if="$(eval peripheral == 'zed')">
+                <rosparam file="$(find zed_wrapper)/params/common.yaml" command="load"/>
+                <rosparam file="$(find zed_wrapper)/params/zed2.yaml" command="load"/>
+
+                <param name="general/zed_id" value="0"/>
+                <param name="general/gpu_id" value="-1"/>
+                <param name="general/camera_name" value="zed2"/>
+                <param name="general/base_frame" value="base_link"/>
             </node>
         </group>
 

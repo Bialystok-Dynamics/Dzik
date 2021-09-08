@@ -149,13 +149,16 @@
 
     <xacro:gazebo_corpse link="base_link"/>
 
-    <xacro:property name="modules_config_file" value="$(find argo_mini_urdf_podstawa)/config/modules.yaml"/>
-    <xacro:property name="modules_config" value="${load_yaml(modules_config_file)}"/>
+    <xacro:arg name="drive" default="argo_mini_urdf_6w_drive"/>
+    <xacro:arg name="peripheral" default=""/>
 
-    <xacro:include filename="$(find ${modules_config['drive']})/urdf/main.xacro"/>
+    <xacro:property name="drive_pkg_name" value="$(arg drive)"/>
 
-    <xacro:if value="${modules_config['peripheral'] != ''}">
-        <xacro:include filename="$(find ${modules_config['peripheral']})/urdf/main.xacro"/>
+    <xacro:include filename="$(find ${drive_pkg_name})/urdf/main.xacro"/>
+
+    <xacro:if value="$(eval peripheral != '')">
+        <xacro:property name="peripheral_pkg_name" value="$(arg peripheral)"/>
+        <xacro:include filename="$(find ${peripheral_pkg_name})/urdf/main.xacro"/>
     </xacro:if>
 
     <gazebo>
