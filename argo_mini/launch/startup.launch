@@ -16,8 +16,10 @@
         <arg name="_drive" value="argo_mini_urdf_6w_drive" unless="$(eval drive=='4w')"/>
         <arg name="_drive" value="argo_mini_urdf_4w_drive" if="$(eval drive=='4w')"/>
 
-        <arg name="_peripheral" value="" unless="$(eval peripheral == 'zed')"/>
-        <arg name="_peripheral" value="argo_mini_urdf_zed_gimbal" if="$(eval peripheral == 'zed')"/>
+        <arg name="_peripheral" value="" unless="$(eval peripheral == 'zed' or peripheral == 'zed_gimbal' or peripheral == 'lamp')"/>
+        <arg name="_peripheral" value="argo_mini_urdf_zed_gimbal" if="$(eval peripheral == 'zed_gimbal')"/>
+        <arg name="_peripheral" value="argo_mini_urdf_zed" if="$(eval peripheral == 'zed')"/>
+        <arg name="_peripheral" value="argo_mini_urdf_lamp" if="$(eval peripheral == 'lamp')"/>
 
         <param name="robot_description"
                command="$(find xacro)/xacro $(find argo_mini_urdf_podstawa)/urdf/argo_mini_urdf_podstawa.xacro
@@ -67,7 +69,7 @@
             </node>
 
             <node name="zed_node" pkg="zed_wrapper" type="zed_wrapper_node" machine="argo_mini"
-                  if="$(eval peripheral == 'zed')">
+                  if="$(eval peripheral == 'zed' or peripheral == 'zed_gimbal')">
                 <rosparam file="$(find zed_wrapper)/params/common.yaml" command="load"/>
                 <rosparam file="$(find zed_wrapper)/params/zed2.yaml" command="load"/>
 
