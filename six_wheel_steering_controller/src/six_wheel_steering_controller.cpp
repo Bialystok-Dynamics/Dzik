@@ -17,7 +17,7 @@ namespace six_wheel_steering_controller {
         Command *currentCommand = _currentCommand.readFromRT();
         if ((time - currentCommand->stamp).toSec() > _cmdVelTimeout) {
             _drive->brake();
-            ROS_DEBUG_STREAM_NAMED(_name,"Discarding outdated cmd_vel message.");
+            ROS_DEBUG_STREAM_NAMED(_name, "Discarding outdated cmd_vel message.");
         } else {
             _kinematics->setVelocity(currentCommand->twist);
         }
@@ -325,7 +325,7 @@ namespace six_wheel_steering_controller {
                 << "mid_to_front_distance: " << midToFront << "\n"
                 << "mid_to_rear_distance: " << midToRear << "\n"
                 << "y_spacing: " << ySpacing << "\n"
-                << "wheel_radius: " << wheelRadius;
+                << "wheel_radius: " << wheelRadius << "\n";
         return true;
     }
 }
