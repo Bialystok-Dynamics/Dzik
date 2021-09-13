@@ -13,7 +13,7 @@
     <rosparam file="$(find argo_mini)/config/hardware.yaml" unless="$(arg simulation)"/>
 
     <group ns="argo_mini">
-        <arg name="_drive" value="argo_mini_urdf_6w_drive" unless="$(eval drive=='4w')"/>
+        <arg name="_drive" value="argo_mini_urdf_6w_drive" if="$(eval drive=='6w')"/>
         <arg name="_drive" value="argo_mini_urdf_4w_drive" if="$(eval drive=='4w')"/>
 
         <arg name="_peripheral" value="" unless="$(eval peripheral == 'zed' or peripheral == 'zed_gimbal' or peripheral == 'lamp')"/>
@@ -29,8 +29,13 @@
         <node name="tf_footprint_base" pkg="tf" type="static_transform_publisher"
               args="0 0 0 0 0 0 base_link base_footprint 40"/>
 
+        <arg name="_drive_controller" value="6w_controller" if="$(eval drive=='6w')"/>
+        <arg name="_drive_controller" value="4w_controller" if="$(eval drive=='4w')"/>
+
         <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
-              args="joint_state_controller six_wheel_steering_controller"/>
+              args="joint_state_controller $(arg _drive_controller)"/>
+
+        <node name="cmd_vel_republish" pkg="topic_tools" type="relay" args="'/argo_mini/cmd_vel' '/argo_mini/4w_controller/cmd_vel'" if="$(eval drive=='4w')"/>
 
         <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
               respawn="false"/>
