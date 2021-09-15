@@ -1,6 +1,7 @@
 #include <six_wheel_steering_controller/six_wheel_steering_controller.h>
 #include <pluginlib/class_list_macros.hpp>
 #include <memory>
+#include <iomanip>
 #include <six_wheel_steering_controller/mode.h>
 #include <six_wheel_steering_controller/modes/mode1.h>
 #include <six_wheel_steering_controller/modes/mode2.h>
@@ -79,10 +80,9 @@ namespace six_wheel_steering_controller {
         _name = complete_ns.substr(id + 1);
 
         _helloMessage << "six_wheel_steering_controller started with following parameteres:\n";
-        ROS_WARN_STREAM("STARETD INIT");
-        if (!initDrive(hw, rootNH, controllerNH)) return false;
-        if (!initOdom(rootNH, controllerNH))return false;
 
+        if (!initDrive(hw, rootNH, controllerNH)) return false;
+        if (!initOdom(rootNH, controllerNH)) return false;
 
         _currentModePub = controllerNH.advertise<std_msgs::UInt8>("current_mode", 5, true);
         _cmdVelSub = rootNH.subscribe("cmd_vel", 50, &SixWheelSteeringController::cmdVelCallback, this);
@@ -184,6 +184,40 @@ namespace six_wheel_steering_controller {
 
         _odomPub.msg_.twist.twist.linear.z = 0;
 
+        _odomPub.msg_.twist.covariance[0] = -1;
+        _odomPub.msg_.twist.covariance[7] = -1;
+        _odomPub.msg_.twist.covariance[14] = -1;
+        _odomPub.msg_.twist.covariance[21] = -1;
+        _odomPub.msg_.twist.covariance[28] = -1;
+        _odomPub.msg_.twist.covariance[35] = -1;
+
+        _odomPub.msg_.pose.covariance[0] = -1;
+        _odomPub.msg_.pose.covariance[7] = -1;
+        _odomPub.msg_.pose.covariance[14] = -1;
+        _odomPub.msg_.pose.covariance[21] = -1;
+        _odomPub.msg_.pose.covariance[28] = -1;
+        _odomPub.msg_.pose.covariance[35] = -1;
+
+        std::vector<double> poseCovariance, twistCovariance;
+
+        if (controllerNH.getParam("twist_covariance", twistCovariance)) {
+            if (twistCovariance.size() != 36) {
+                ROS_ERROR_STREAM("Wrong size of twist_covariance_diagonal current = "
+                                         << twistCovariance.size() << " expected: 36");
+                return false;
+            }
+            std::copy(twistCovariance.begin(), twistCovariance.end(), _odomPub.msg_.twist.covariance.begin());
+        }
+
+        if (controllerNH.getParam("pose_covariance", poseCovariance)) {
+            if (poseCovariance.size() != 36) {
+                ROS_ERROR_STREAM("Wrong size of pose_covariance_diagonal current = "
+                                         << poseCovariance.size() << " expected: 36");
+                return false;
+            }
+            std::copy(poseCovariance.begin(), poseCovariance.end(), _odomPub.msg_.pose.covariance.begin());
+        }
+
         double pubRate;
         controllerNH.param("publish_rate", pubRate, 50.);
         _publishPeriod = ros::Duration(1 / pubRate);
@@ -199,8 +233,23 @@ namespace six_wheel_steering_controller {
             _tfPub.msg_.transforms[0].transform.translation.z = 0;
         }
 
-        _helloMessage << "publish_rate: " << pubRate << "\n"
-                      << "enable_odom_tf: " << (_tf2OdomEnable ? "true" : "false") << "\n";
+        _helloMessage << "\tpublish_rate: " << pubRate << "\n"
+                      << "\tenable_odom_tf: " << (_tf2OdomEnable ? "true" : "false") << '\n'
+                      << "\tpose_covariance:";
+
+        for (int i = 0; i < 6; i++) {
+            _helloMessage << "\n\t\t";
+            std::copy(_odomPub.msg_.twist.covariance.begin() + i * 6,
+                      _odomPub.msg_.twist.covariance.begin() + (i + 1) * 6,
+                      std::ostream_iterator<double>(_helloMessage << std::fixed, " "));
+        }
+        _helloMessage << "\n\ttwist_covariance:";
+        for (int i = 0; i < 6; i++) {
+            _helloMessage << "\n\t\t";
+            std::copy(_odomPub.msg_.pose.covariance.begin() + i * 6,
+                      _odomPub.msg_.pose.covariance.begin() + (i + 1) * 6,
+                      std::ostream_iterator<double>(_helloMessage << std::fixed, " "));
+        }
         return true;
     }
 
@@ -309,25 +358,25 @@ namespace six_wheel_steering_controller {
 
 
         _helloMessage
-                << "base_frame_id: " << _baseFrameId << "\n"
-                << "steering joints:\n"
-                << "- " << frontLeftSteeringJointName << "\n"
-                << "- " << frontRightSteeringJointName << "\n"
-                << "- " << midLeftSteeringJointName << "\n"
-                << "- " << midRightSteeringJointName << "\n"
-                << "- " << rearLeftSteeringJointName << "\n"
-                << "- " << rearRightSteeringJointName << "\n"
-                << "wheel_joints:\n"
-                << "- " << frontLeftWheelJointName << "\n"
-                << "- " << frontRightWheelJointName << "\n"
-                << "- " << midLeftWheelJointName << "\n"
-                << "- " << midRightWheelJointName << "\n"
-                << "- " << rearLeftWheelJointName << "\n"
-                << "- " << rearRightWheelJointName << "\n"
-                << "mid_to_front_distance: " << midToFront << "\n"
-                << "mid_to_rear_distance: " << midToRear << "\n"
-                << "y_spacing: " << ySpacing << "\n"
-                << "wheel_radius: " << wheelRadius << "\n";
+                << "\tbase_frame_id: " << _baseFrameId << "\n"
+                << "\tsteering joints:\n"
+                << "\t\t- " << frontLeftSteeringJointName << "\n"
+                << "\t\t- " << frontRightSteeringJointName << "\n"
+                << "\t\t- " << midLeftSteeringJointName << "\n"
+                << "\t\t- " << midRightSteeringJointName << "\n"
+                << "\t\t- " << rearLeftSteeringJointName << "\n"
+                << "\t\t- " << rearRightSteeringJointName << "\n"
+                << "\twheel_joints:\n"
+                << "\t\t- " << frontLeftWheelJointName << "\n"
+                << "\t\t- " << frontRightWheelJointName << "\n"
+                << "\t\t- " << midLeftWheelJointName << "\n"
+                << "\t\t- " << midRightWheelJointName << "\n"
+                << "\t\t- " << rearLeftWheelJointName << "\n"
+                << "\t\t- " << rearRightWheelJointName << "\n"
+                << "\tmid_to_front_distance: " << midToFront << "\n"
+                << "\tmid_to_rear_distance: " << midToRear << "\n"
+                << "\ty_spacing: " << ySpacing << "\n"
+                << "\twheel_radius: " << wheelRadius << "\n";
         return true;
     }
 }

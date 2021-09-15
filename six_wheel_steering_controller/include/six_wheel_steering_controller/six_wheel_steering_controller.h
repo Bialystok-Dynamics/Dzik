@@ -5,7 +5,6 @@
 #include <controller_interface/multi_interface_controller.h>
 #include <hardware_interface/joint_command_interface.h>
 #include "kinematics.h"
-#include "odometry.h"
 #include "drive.h"
 #include <ros/ros.h>
 #include <realtime_tools/realtime_publisher.h>
@@ -40,7 +39,6 @@ namespace six_wheel_steering_controller{
         std::stringstream _helloMessage;
 
         std::unique_ptr<Kinematics> _kinematics;
-        std::unique_ptr<Odometry> _odometry;
         std::shared_ptr<Drive> _drive;
 
         std::string _baseFrameId;

@@ -4,23 +4,25 @@
 #include "common.h"
 #include <hardware_interface/joint_command_interface.h>
 
-namespace six_wheel_steering_controller{
+namespace six_wheel_steering_controller {
 
     class WheelUnit {
     public:
 
         WheelUnit(hardware_interface::JointHandle steeringHandle, hardware_interface::JointHandle wheelHandle);
+
         WheelUnitInfo getInfo() const;
+
         void setCommand(WheelUnitInfo command);
 
 
     private:
         hardware_interface::JointHandle _steeringHandle;
         hardware_interface::JointHandle _wheelHandle;
-        double _wheelRadius=0;
-        double _angleMin=0;
-        double _angleMax=0;
-        double _rotationalSpeedMax=0;
+        double _wheelRadius = 0;
+        double _angleMin = 0;
+        double _angleMax = 0;
+        double _rotationalSpeedMax = 0;
 
         WheelUnitInfo optimizeCommand(WheelUnitInfo command);
 
@@ -42,7 +44,6 @@ namespace six_wheel_steering_controller{
         void setRotationalSpeedMax(double rotationalSpeedMax);
     };
 }
-
 
 
 #endif //SIX_WHEEL_STEERING_CONTROLLER_WHEEL_UNIT_H

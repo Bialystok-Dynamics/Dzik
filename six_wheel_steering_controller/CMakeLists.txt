@@ -19,8 +19,6 @@ find_package(catkin REQUIRED COMPONENTS
         six_wheel_steering_msgs
         )
 
-find_package(Boost REQUIRED)
-
 find_package(Eigen3 REQUIRED)
 
 # Declare a catkin package
@@ -34,7 +32,6 @@ catkin_package(
         realtime_tools
         roscpp
         tf
-        DEPENDS Boost
         DEPENDS EIGEN3
 )
 
@@ -57,14 +54,10 @@ add_library(${PROJECT_NAME}
         src/mode.cpp
         src/drive.cpp
         src/kinematics.cpp
-        src/odometry.cpp
         src/modes/mode1.cpp
-        src/modes/mode2.cpp
-        src/math/vector.cpp
-        src/math/point.cpp)
+        src/modes/mode2.cpp)
 
 target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES})
-
 
 install(DIRECTORY include/${PROJECT_NAME}/
         DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
