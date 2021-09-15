@@ -21,6 +21,8 @@ find_package(catkin REQUIRED COMPONENTS
 
 find_package(Boost REQUIRED)
 
+find_package(Eigen3 REQUIRED)
+
 # Declare a catkin package
 catkin_package(
         INCLUDE_DIRS include
@@ -33,6 +35,7 @@ catkin_package(
         roscpp
         tf
         DEPENDS Boost
+        DEPENDS EIGEN3
 )
 
 
@@ -45,6 +48,7 @@ include_directories(
         include
         ${catkin_INCLUDE_DIRS}
         ${Boost_INCLUDE_DIRS}
+        ${EIGEN3_INCLUDE_DIRS}
 )
 
 add_library(${PROJECT_NAME}

@@ -22,7 +22,7 @@ namespace six_wheel_steering_controller {
             _kinematics->setVelocity(currentCommand->twist);
         }
 
-        auto odomInfo = _odometry->getOdometry(period.toSec());
+        auto odomInfo = _kinematics->getOdometry(period.toSec());
 
         if (time - _lastOdomPublishTime >= _publishPeriod) {
             _lastOdomPublishTime = time;
@@ -79,6 +79,7 @@ namespace six_wheel_steering_controller {
         _name = complete_ns.substr(id + 1);
 
         _helloMessage << "six_wheel_steering_controller started with following parameteres:\n";
+        ROS_WARN_STREAM("STARETD INIT");
         if (!initDrive(hw, rootNH, controllerNH)) return false;
         if (!initOdom(rootNH, controllerNH))return false;
 
@@ -106,8 +107,7 @@ namespace six_wheel_steering_controller {
             _cmdVelTimeout(0.5),
             _tf2OdomEnable(false) {
         _drive->setMode(std::make_unique<modes::Mode1>());
-        _kinematics = std::make_unique<Kinematics>(_drive);
-        _odometry = std::make_unique<Odometry>(_drive);
+        _kinematics = std::make_unique<Kinematics>();
     }
 
     std::unique_ptr<WheelUnit>
@@ -302,6 +302,8 @@ namespace six_wheel_steering_controller {
         _drive->setDistanceToFront(midToFront);
         _drive->setDistanceToRear(midToRear);
         _drive->setY_AxisSpacing(ySpacing);
+
+        _kinematics->init(_drive);
 
         _mode2AngleError = controllerNH.param("mode2_angle_error", 1e-3);
 
