@@ -7,7 +7,7 @@
         </gazebo>
     </xacro:macro>
 
-    <link name="dummy"/>
+    <link name="base_footprint"/>
     <link
             name="base_link">
         <inertial>
@@ -49,9 +49,10 @@
         </collision>
     </link>
 
-    <joint name="dummy_joint" type="fixed">
-        <parent link="dummy"/>
+    <joint name="base_to_footprint" type="fixed">
+        <parent link="base_footprint"/>
         <child link="base_link"/>
+        <origin xyz="0 0 0.2" rpy="0 0 0"/>
     </joint>
 
     <link name="peripheral_base">

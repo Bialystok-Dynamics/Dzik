@@ -26,9 +26,6 @@
                drive:=$(arg _drive)
                peripheral:=$(arg _peripheral)"/>
 
-        <node name="tf_footprint_base" pkg="tf" type="static_transform_publisher"
-              args="0 0 0 0 0 0 base_link base_footprint 40"/>
-
         <arg name="_drive_controller" value="6w_controller" if="$(eval drive=='6w')"/>
         <arg name="_drive_controller" value="4w_controller" if="$(eval drive=='4w')"/>
 
@@ -43,7 +40,7 @@
         <group if="$(arg simulation)">
 
             <node name="spawn_model" pkg="gazebo_ros" type="spawn_model"
-                  args="-param '/argo_mini/robot_description' -urdf -model argo_mini -z 0.275"/>
+                  args="-param '/argo_mini/robot_description' -urdf -model argo_mini"/>
         </group>
 
         <group unless="$(arg simulation)">
