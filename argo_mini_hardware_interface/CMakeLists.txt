@@ -100,7 +100,11 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
- add_executable(${PROJECT_NAME}_node src/argo_mini_hardware_interface_node.cpp src/argo_mini_hardware_interface.cpp)
+ add_executable(${PROJECT_NAME}_node
+         src/argo_mini_hardware_interface_node.cpp
+         src/argo_mini_hardware_interface.cpp
+         src/six_wheel_handler.cpp
+         )
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the

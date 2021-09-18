@@ -5,6 +5,7 @@
 #include <hardware_interface/joint_state_interface.h>
 #include <hardware_interface/joint_command_interface.h>
 #include <serial/serial.h>
+#include "interface_handler.h"
 
 #include <utility>
 
@@ -22,38 +23,16 @@ namespace argo_mini_hardware_interface {
         void write(const ros::Time &time, const ros::Duration &duration) override;
 
     private:
-        std::vector<uint8_t> getDataToWrite() const;
 
         bool initSerial(ros::NodeHandle &privateNh);
 
-        bool registerHandles(ros::NodeHandle &privateNh);
+        bool initDrive(ros::NodeHandle &privateNh);
 
         std::string name_;
 
         std::unique_ptr<serial::Serial> serial_;
 
-        hardware_interface::JointStateInterface jointStateInterface;
-        hardware_interface::PositionJointInterface positionJointInterface;
-        hardware_interface::VelocityJointInterface velocityJointInterface;
-
-        struct HardwareInfo {
-            double frontLeftSteer;
-            double frontRightSteer;
-            double midLeftSteer;
-            double midRightSteer;
-            double rearLeftSteer;
-            double rearRightSteer;
-
-            double frontLeftWheel;
-            double frontRightWheel;
-            double midLeftWheel;
-            double midRightWheel;
-            double rearLeftWheel;
-            double rearRightWheel;
-        } commands, velocities, positions, efforts;
-
-        double wheelCommandCoefficient_;
-        double steerCommandCoefficient_;
+        std::unique_ptr<InterfaceHandler> ifaceHandler_;
 
         class SerialTimer {
         public:
