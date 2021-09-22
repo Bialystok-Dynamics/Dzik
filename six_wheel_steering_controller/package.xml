@@ -4,8 +4,7 @@
   <version>0.0.0</version>
   <description>The six_wheel_steering_controller package</description>
 
-  <maintainer email="prdabr@gmail.com">przemek</maintainer>
-
+  <maintainer email="prdabr@gmail.com">Przemysław Dąbrowski</maintainer>
   <license>BSD</license>
 
   <buildtool_depend>catkin</buildtool_depend>
