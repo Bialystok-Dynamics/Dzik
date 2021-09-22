@@ -85,7 +85,13 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES argo_mini_hardware_interface
-#  CATKIN_DEPENDS controller_manager hardware_interface ros_control roscpp urdf
+  CATKIN_DEPENDS
+        controller_manager
+        hardware_interface
+        ros_control
+        roscpp
+        urdf
+        serial
 #  DEPENDS system_lib
 )
 
