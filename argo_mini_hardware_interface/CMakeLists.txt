@@ -91,7 +91,6 @@ catkin_package(
         ros_control
         roscpp
         urdf
-        serial
 #  DEPENDS system_lib
 )
 
