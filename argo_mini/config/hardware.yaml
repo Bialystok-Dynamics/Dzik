@@ -5,7 +5,7 @@ argo_mini:
     write_frequency: 50. # rate at which commands are sent [Hz]
 
   wheel_joints: # handle names
-    command_coeff: 10. # coefficient by which demanded velocity of wheel is multiplied before sending [(rad/s)^-1]
+    command_coeff: -4.5 # coefficient by which demanded velocity of wheel is multiplied before sending [(rad/s)^-1]
 
     front_left: front_left_wheel
     front_right: front_right_wheel
@@ -15,7 +15,7 @@ argo_mini:
     rear_right: rear_right_wheel
 
   steering_joints:
-    command_coeff: 31.85 # coefficient by which demanded steering angle is multiplied before sending [rad^-1]
+    command_coeff: -63.66 # coefficient by which demanded steering angle is multiplied before sending [rad^-1]
 
     front_left: front_left_turn
     front_right: front_right_turn

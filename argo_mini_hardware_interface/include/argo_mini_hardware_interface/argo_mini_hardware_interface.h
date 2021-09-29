@@ -34,6 +34,8 @@ namespace argo_mini_hardware_interface {
 
         std::unique_ptr<InterfaceHandler> ifaceHandler_;
 
+        std::vector<uint8_t> readBuffer_;
+
         class SerialTimer {
         public:
             SerialTimer(double frequency, const ros::Time &initTime) :

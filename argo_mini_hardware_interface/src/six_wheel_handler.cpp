@@ -107,4 +107,34 @@ namespace argo_mini_hardware_interface {
                                     0x65};
     }
 
+    ReadStatus SixWheelHandler::readData(std::vector<uint8_t> &data) {
+        auto it = data.begin();
+        for (; it != data.end() && *it != 0x9B; it++);
+
+        if (it == data.end()) return ReadStatus::Error;
+        auto beginIt = it;
+
+        for (; it != data.end() && *it != 0x65; it++);
+        if (it == data.end()) {
+            auto tmp = std::vector<uint8_t>(beginIt, data.end());
+            data = tmp;
+            return ReadStatus::TooLeast;
+        }
+
+        velocities.frontLeftWheel = ((int8_t) *(beginIt + 1)) / wheelCommandCoefficient_;
+        positions.frontLeftSteer = ((int8_t) *(beginIt + 2)) / steerCommandCoefficient_;
+        velocities.frontRightWheel = ((int8_t) *(beginIt + 3)) / wheelCommandCoefficient_;
+        positions.frontRightSteer = ((int8_t) *(beginIt + 4)) / steerCommandCoefficient_;
+        velocities.midLeftWheel = ((int8_t) *(beginIt + 5)) / wheelCommandCoefficient_;
+        positions.midLeftSteer = ((int8_t) *(beginIt + 6)) / steerCommandCoefficient_;
+        velocities.midRightWheel = ((int8_t) *(beginIt + 7)) / wheelCommandCoefficient_;
+        positions.midRightSteer = ((int8_t) *(beginIt + 8)) / steerCommandCoefficient_;
+        velocities.rearLeftWheel = ((int8_t) *(beginIt + 9)) / wheelCommandCoefficient_;
+        positions.rearLeftSteer = ((int8_t) *(beginIt + 10)) / steerCommandCoefficient_;
+        velocities.rearRightWheel = ((int8_t) *(beginIt + 11)) / wheelCommandCoefficient_;
+        positions.rearRightSteer = ((int8_t) *(beginIt + 12)) / steerCommandCoefficient_;
+
+        return ReadStatus::Success;
+    }
+
 }

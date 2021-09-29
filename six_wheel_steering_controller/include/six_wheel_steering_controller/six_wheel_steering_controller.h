@@ -14,6 +14,7 @@
 #include <six_wheel_steering_msgs/ModeChange.h>
 #include <tf/tfMessage.h>
 #include <sstream>
+#include "speed_limiter.h"
 
 namespace six_wheel_steering_controller{
 
@@ -41,6 +42,10 @@ namespace six_wheel_steering_controller{
         std::unique_ptr<Kinematics> _kinematics;
         std::shared_ptr<Drive> _drive;
 
+        SpeedLimiter _xLimiter;
+        SpeedLimiter _yLimiter;
+        SpeedLimiter _yawLimiter;
+
         std::string _baseFrameId;
 
         realtime_tools::RealtimePublisher<nav_msgs::Odometry> _odomPub;
@@ -67,6 +72,7 @@ namespace six_wheel_steering_controller{
         bool initOdom(ros::NodeHandle &rootNH, ros::NodeHandle &controllerNH);
         bool initDrive(hardware_interface::RobotHW *hw, ros::NodeHandle &rootNH,
                        ros::NodeHandle &controllerNH);
+        bool initLimiters(ros::NodeHandle &controllerNH);
 
         bool modeChangeCallback(six_wheel_steering_msgs::ModeChangeRequest &req, six_wheel_steering_msgs::ModeChangeResponse & resp);
         void publishCurrentMode();

@@ -56,15 +56,11 @@ namespace six_wheel_steering_controller {
         if (_wheelRadius == 0)
             throw std::domain_error("Wheel radius cannot be 0");
 
-        command = optimizeCommand(command);
-        if (_angleMax != _angleMin) {
-            if (command.angle > _angleMax)
-                command.angle = _angleMax;
-            else if (command.angle < _angleMin)
-                command.angle = _angleMin;
-        }
-        _steeringHandle.setCommand(command.angle);
+        optimizeCommand(command);
+        optimizeAngleExceeded(command);
+        clampAngle(command);
 
+        _steeringHandle.setCommand(command.angle);
 
         double rotSpeed = command.speed / _wheelRadius;
 
@@ -76,7 +72,21 @@ namespace six_wheel_steering_controller {
         _wheelHandle.setCommand(rotSpeed);
     }
 
-    WheelUnitInfo WheelUnit::optimizeCommand(WheelUnitInfo command) {
+    void WheelUnit::optimizeAngleExceeded(WheelUnitInfo &command) const {
+        if (_angleMax != _angleMin){
+            if(command.angle>_angleMax)
+            {
+                command.angle -= M_PI;
+                command.speed  = -command.speed;
+            }
+            else if(command.angle<_angleMin){
+                command.angle += M_PI;
+                command.speed = -command.speed;
+            }
+        }
+    }
+
+    void WheelUnit::optimizeCommand(WheelUnitInfo &command) {
         command.angle = std::fmod(command.angle, 2 * M_PI);
         if (command.angle >= M_PI)
             command.angle -= 2 * M_PI;
@@ -91,8 +101,15 @@ namespace six_wheel_steering_controller {
             command.angle += M_PI;
             command.speed *= -1;
         }
+    }
 
-        return command;
+    void WheelUnit::clampAngle(WheelUnitInfo &command) const {
+        if (_angleMax != _angleMin) {
+            if (command.angle > _angleMax)
+                command.angle = _angleMax;
+            else if (command.angle < _angleMin)
+                command.angle = _angleMin;
+        }
     }
 }
 

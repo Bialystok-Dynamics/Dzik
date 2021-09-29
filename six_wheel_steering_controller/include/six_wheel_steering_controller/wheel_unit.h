@@ -24,9 +24,13 @@ namespace six_wheel_steering_controller {
         double _angleMax = 0;
         double _rotationalSpeedMax = 0;
 
-        WheelUnitInfo optimizeCommand(WheelUnitInfo command);
+        void optimizeAngleExceeded(WheelUnitInfo &command) const;
+
+        void clampAngle(WheelUnitInfo &command) const;
+        static void optimizeCommand(WheelUnitInfo &command);
 
     public:
+
         double getWheelRadius() const;
 
         void setWheelRadius(double wheelRadius);

@@ -13,7 +13,10 @@ namespace argo_mini_hardware_interface{
 
         std::vector<uint8_t> getData() const override;
 
+        ReadStatus readData(std::vector<uint8_t> &data) override;
+
     private:
+
         hardware_interface::JointStateInterface jointStateInterface;
         hardware_interface::PositionJointInterface positionJointInterface;
         hardware_interface::VelocityJointInterface velocityJointInterface;

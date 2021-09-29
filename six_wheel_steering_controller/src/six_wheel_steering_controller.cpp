@@ -16,8 +16,16 @@ namespace six_wheel_steering_controller {
     void SixWheelSteeringController::update(const ros::Time &time, const ros::Duration &period) {
 
         Command *currentCommand = _currentCommand.readFromRT();
+
+        currentCommand->twist.linX = _xLimiter.limit(currentCommand->twist.linX, period.toSec());
+        currentCommand->twist.linY = _yLimiter.limit(currentCommand->twist.linY, period.toSec());
+        currentCommand->twist.angZ = _yawLimiter.limit(currentCommand->twist.angZ, period.toSec());
+
         if ((time - currentCommand->stamp).toSec() > _cmdVelTimeout) {
             _drive->brake();
+            _xLimiter.reset();
+            _yLimiter.reset();
+            _yawLimiter.reset();
             ROS_DEBUG_STREAM_NAMED(_name, "Discarding outdated cmd_vel message.");
         } else {
             _kinematics->setVelocity(currentCommand->twist);
@@ -83,6 +91,7 @@ namespace six_wheel_steering_controller {
 
         if (!initDrive(hw, rootNH, controllerNH)) return false;
         if (!initOdom(rootNH, controllerNH)) return false;
+        if (!initLimiters(controllerNH)) return false;
 
         _currentModePub = controllerNH.advertise<std_msgs::UInt8>("current_mode", 5, true);
         _cmdVelSub = rootNH.subscribe("cmd_vel", 50, &SixWheelSteeringController::cmdVelCallback, this);
@@ -104,7 +113,7 @@ namespace six_wheel_steering_controller {
     SixWheelSteeringController::SixWheelSteeringController() :
             _drive(std::make_shared<Drive>()),
             _mode2AngleError(0.),
-            _cmdVelTimeout(0.5),
+            _cmdVelTimeout(0.15),
             _tf2OdomEnable(false) {
         _drive->setMode(std::make_unique<modes::Mode1>());
         _kinematics = std::make_unique<Kinematics>();
@@ -377,6 +386,48 @@ namespace six_wheel_steering_controller {
                 << "\tmid_to_rear_distance: " << midToRear << "\n"
                 << "\ty_spacing: " << ySpacing << "\n"
                 << "\twheel_radius: " << wheelRadius << "\n";
+        return true;
+    }
+
+    bool SixWheelSteeringController::initLimiters(ros::NodeHandle &controllerNH) {
+
+#define OBTAIN_PARAMS(parameters_namespace, limiter)\
+        controllerNH.getParam(parameters_namespace "/has_velocity_limits", (limiter).hasVelocityLimits);\
+        controllerNH.getParam(parameters_namespace "/max_velocity", (limiter).maxVelocity);\
+        controllerNH.getParam(parameters_namespace "/min_velocity", (limiter).minVelocity); \
+        \
+        controllerNH.getParam(parameters_namespace "/has_acceleration_limits", (limiter).hasAccelerationLimits);\
+        controllerNH.getParam(parameters_namespace "/max_acceleration", (limiter).maxAcceleration);\
+        controllerNH.getParam(parameters_namespace "/min_acceleration", (limiter).minAcceleration);\
+        \
+        controllerNH.getParam(parameters_namespace "/has_jerk_limits", (limiter).hasJerkLimits);\
+        controllerNH.getParam(parameters_namespace "/max_jerk", (limiter).maxJerk);\
+        controllerNH.getParam(parameters_namespace "/min_jerk", (limiter).minJerk);
+
+#define ADD_TO_HELLO_MESSAGE(parameter, limiter) \
+        _helloMessage<<                                \
+            "\n\t\t\t" parameter ":"<<\
+            "\n\t\t\t\t- has_velocity_limits: "   << ((limiter).hasVelocityLimits ? "true": "false")<<\
+            "\n\t\t\t\t- max_velocity: "    << (limiter).maxVelocity<<\
+            "\n\t\t\t\t- min_velocity: "    <<(limiter).minVelocity<<\
+            "\n\t\t\t\t- has_acceleration_limits: " << ((limiter).hasAccelerationLimits ? "true": "false")<<\
+            "\n\t\t\t\t- max_acceleration: " << (limiter).maxAcceleration <<\
+            "\n\t\t\t\t- min_acceleration: " << (limiter).minAcceleration <<\
+            "\n\t\t\t\t- has_jerk_limits: " << ((limiter).hasJerkLimits ? "true": "false")<<\
+            "\n\t\t\t\t- max_jerk: " << (limiter).maxJerk <<\
+            "\n\t\t\t\t- min_jerk: " << (limiter).minJerk;
+
+
+        OBTAIN_PARAMS("limits/linear/x", _xLimiter)
+        OBTAIN_PARAMS("limits/linear/y", _yLimiter)
+        OBTAIN_PARAMS("limits/angular/z", _yawLimiter)
+
+        _helloMessage << "\n\tlimits:\n\t\tlinear:";
+        ADD_TO_HELLO_MESSAGE( "x", _xLimiter)
+        ADD_TO_HELLO_MESSAGE( "y", _yLimiter)
+        _helloMessage<<"\n\t\tangular:";
+        ADD_TO_HELLO_MESSAGE( "z", _yawLimiter)
+
         return true;
     }
 }

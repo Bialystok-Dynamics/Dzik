@@ -55,7 +55,8 @@ add_library(${PROJECT_NAME}
         src/drive.cpp
         src/kinematics.cpp
         src/modes/mode1.cpp
-        src/modes/mode2.cpp)
+        src/modes/mode2.cpp
+        src/speed_limiter.cpp)
 
 target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES})
 

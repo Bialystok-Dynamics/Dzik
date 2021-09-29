@@ -58,6 +58,50 @@ argo_mini:
                         0,     0,    0,          0,          1000000.0,  0,
                         0,     0,    0,          0,          0,          1000.0 ]
 
+    limits:
+      linear:
+        x:
+          has_velocity_limits: true
+          has_acceleration_limits: false
+          has_jerk_limits: false
+
+          max_velocity: 1.0  # m/s
+          min_velocity: -0.5 # m/s
+
+          max_acceleration: 0.8  # m/s^2
+          min_acceleration: -0.4 # m/s^2
+
+          max_jerk: 5.0  # m/s^3
+          min_jerk: -5.0  # m/s^3
+        y:
+          has_velocity_limits: true
+          has_acceleration_limits: false
+          has_jerk_limits: false
+
+          max_velocity: 1.0  # m/s
+          min_velocity: -0.5 # m/s
+
+          max_acceleration: 0.8  # m/s^2
+          min_acceleration: -0.4 # m/s^2
+
+          max_jerk: 5.0  # m/s^3
+          min_jerk: -5.0  # m/s^3
+
+      angular:
+        z:
+          has_velocity_limits: false
+          has_acceleration_limits: false
+          has_jerk_limits: false
+
+          max_velocity: 3.14  # rad/s
+          min_velocity: -3.14
+
+          max_acceleration: 1.5  # rad/s^2
+          min_acceleration: -1.5  # rad/s^2
+
+          max_jerk: 2.5  # rad/s^3
+          min_jerk: -2.5  # rad/s^3
+
   4w_controller:
     type: "diff_drive_controller/DiffDriveController"
     left_wheel: [ 'front_left_wheel', 'rear_left_wheel' ]

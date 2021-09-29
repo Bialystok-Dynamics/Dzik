@@ -19,6 +19,21 @@ namespace argo_mini_hardware_interface {
     }
 
     void HardwareInterface::read(const ros::Time &time1, const ros::Duration &duration) {
+        serial_->read(readBuffer_,14);
+
+        auto status = ifaceHandler_->readData(readBuffer_);
+        std::stringstream ss;
+        std::copy(readBuffer_.begin(), readBuffer_.end(), std::ostream_iterator<int>(ss << std::hex, " "));
+
+        switch(status){
+            case ReadStatus::Success:
+                ROS_DEBUG_STREAM_THROTTLE_NAMED(0.1, "serial_comm", "Received frame: " << ss.str());
+            case ReadStatus::Error:
+                readBuffer_.clear();
+                break;
+            default:
+                break;
+        }
     }
 
     void HardwareInterface::write(const ros::Time &time, const ros::Duration &duration) {

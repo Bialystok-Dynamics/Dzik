@@ -55,12 +55,12 @@
         </group>
 
         <group unless="$(arg simulation)">
-            <arg name="_drive" value="6w" if="$(eval drive=='6w')"/>
+            <arg name="_remote_drive" value="6w" if="$(eval drive=='6w')"/>
 
             <include file="$(find argo_mini)/launch/remote_nodes.launch">
                 <arg name="zed" value="$(eval peripheral == 'zed' or peripheral == 'zed_gimbal')"/>
                 <arg name="mapping" value="$(arg mapping)"/>
-                <arg name="drive" value="$(arg _drive)"/>
+                <arg name="drive" value="$(arg _remote_drive)"/>
             </include>
 
             <node name="front_camera_node" type="ipcamera_driver" pkg="ipcamera_driver">
