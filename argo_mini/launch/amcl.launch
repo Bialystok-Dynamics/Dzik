@@ -1,0 +1,12 @@
+<launch>
+  
+  <arg name="map_file" default="$(find argo_mini)/maps/map01.yaml"/>
+  
+  <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" output="screen"/>
+  
+  <node name="amcl_node" pkg="amcl" type="amcl" output="screen">
+    <rosparam command="load" file="$(find argo_mini)/config/amcl.yaml"/>
+    <remap from="scan" to="laser/scan"/>
+  </node>
+  
+</launch>

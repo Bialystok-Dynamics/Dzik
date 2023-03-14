@@ -4,14 +4,30 @@
     <arg name="peripheral" default=""/>
     <arg name="drive" default="6w"/>
     <arg name="mapping" default="false"/>
+    <arg name="amcl" default="false"/> <!-- use with test_easy_map on true-->
+    <arg name="navigation" default="false"/>
+    <arg name="test_easy_map" default="false"/>
 
-    <include file="$(find aws_robomaker_small_warehouse_world)/launch/magazyn_z_18_tagami.launch"
-             if="$(arg simulation)"/>
-
-    <node name="rviz" pkg="rviz" type="rviz" if="$(arg rviz)" args="-d $(find argo_mini)/rviz/rviz.rviz"/>
+    <node name="rviz" pkg="rviz" type="rviz" if="$(arg rviz)" args="-d $(find argo_mini)/rviz/rviz.rviz">
+        <remap from="/move_base_simple/goal" to="/argo_mini/move_base_simple/goal"/>
+    </node>
 
     <rosparam file="$(find argo_mini)/config/controllers_info.yaml"/>
     <rosparam file="$(find argo_mini)/config/hardware.yaml" unless="$(arg simulation)"/>
+
+    <group if="$(arg simulation)">
+        <include file="$(find aws_robomaker_small_warehouse_world)/launch/magazyn_z_18_tagami.launch"
+                 unless="$(arg test_easy_map)"/>
+        <include file="$(find gazebo_ros)/launch/empty_world.launch" if="$(arg test_easy_map)">
+            <arg name="world_name" value="$(find argo_mini)/world/test_easy.world"/>
+            <arg name="paused" default="false"/>
+            <arg name="use_sim_time" default="true"/>
+            <arg name="gui" default="true"/>
+            <arg name="headless" default="false"/>
+            <arg name="debug" default="false"/>
+            <arg name="verbose" default="true"/>
+        </include>
+    </group>
 
     <group ns="argo_mini">
         <arg name="_drive" value="argo_mini_urdf_6w_drive" if="$(eval drive=='6w')"/>
@@ -52,6 +68,8 @@
 <!--            </node>-->
 
             <include file="$(find argo_mini)/launch/mapping.launch" if="$(arg mapping)"/>
+            <include file="$(find argo_mini)/launch/amcl.launch" if="$(arg amcl)"/>
+            <include file="$(find argo_mini)/launch/navigation.launch" if="$(arg navigation)"/>
             <node pkg="argo_mini" name="ctrl_c_gazebo" type="ctrl_c_gazebo.py" respawn="false" output="screen"/>
         </group>
 
