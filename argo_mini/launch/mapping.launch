@@ -1,12 +1,19 @@
 <launch>
     <arg name="machine" default=""/>
 
-    <node name="slam_node" pkg="hector_mapping" type="hector_mapping" machine="$(arg machine)">
-        <param name="base_frame" value="base_footprint"/>
-        <param name="map_frame" value="map"/>
-        <param name="odom_frame" value="odom"/>
-        
-        <remap from="scan" to="laser/scan/filtered"/>"
+<!--    hector_mapping-->
+<!--    <node name="slam_node" pkg="hector_mapping" type="hector_mapping" machine="$(arg machine)">-->
+<!--        <param name="base_frame" value="base_footprint"/>-->
+<!--        <param name="map_frame" value="map"/>-->
+<!--        <param name="odom_frame" value="odom"/>-->
+<!--        -->
+<!--        <remap from="scan" to="laser/scan"/>"-->
+<!--    </node>-->
+
+<!--    gmapping-->
+    <node name="slam_node" pkg="gmapping" type="slam_gmapping" machine="$(arg machine)">
+        <rosparam command="load" file="$(find argo_mini)/config/gmapping_conf.yaml"/>
+        <remap from="scan" to="laser/scan"/>"
     </node>
 
 </launch>

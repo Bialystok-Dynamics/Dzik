@@ -1,5 +1,5 @@
 <launch>
-    <arg name="simulation" default="false"/>
+    <arg name="simulation" default="true"/>
     <arg name="rviz" default="true"/>
     <arg name="peripheral" default=""/>
     <arg name="drive" default="6w"/>
@@ -45,13 +45,14 @@
             <node name="spawn_model" pkg="gazebo_ros" type="spawn_model"
                   args="-param '/argo_mini/robot_description' -urdf -model argo_mini"/>
 
-            <node pkg="laser_filters" type="scan_to_scan_filter_chain" name="laser_filter">
-                <rosparam command="load" file="$(find argo_mini)/config/laser_filter_config.yaml"/>
-                <remap from="scan" to="laser/scan"/>
-                <remap from="scan_filtered" to="laser/scan/filtered"/>
-            </node>
+<!--            <node pkg="laser_filters" type="scan_to_scan_filter_chain" name="laser_filter">-->
+<!--                <rosparam command="load" file="$(find argo_mini)/config/laser_filter_config.yaml"/>-->
+<!--                <remap from="scan" to="laser/scan"/>-->
+<!--                <remap from="scan_filtered" to="laser/scan/filtered"/>-->
+<!--            </node>-->
 
             <include file="$(find argo_mini)/launch/mapping.launch" if="$(arg mapping)"/>
+            <node pkg="argo_mini" name="ctrl_c_gazebo" type="ctrl_c_gazebo.py" respawn="false" output="screen"/>
         </group>
 
         <group unless="$(arg simulation)">

@@ -130,8 +130,10 @@
     <joint
             name="rp_lidar_a1_joint"
             type="fixed">
+
+<!--        xyz="0.23107 -0.0049901 -0.095067"-->
         <origin
-                xyz="0.23107 -0.0049901 -0.095067"
+                xyz="0.23107 -0.0049901 0.05"
                 rpy="-3.1416 0 0"/>
         <parent
                 link="base_link"/>
@@ -208,7 +210,7 @@
             <ray>
                 <scan>
                     <horizontal>
-                        <samples>4000</samples>
+                        <samples>500</samples>
                         <resolution>1</resolution>
                         <min_angle>-3.14.</min_angle>
                         <max_angle>3.14</max_angle>

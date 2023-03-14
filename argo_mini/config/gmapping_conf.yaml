@@ -1,0 +1,24 @@
+# plik konfiguracyjny gmapping
+
+# Ustawienia ogólne
+map_update_interval: 5.0 # Częstotliwość aktualizacji mapy
+maxUrange: 10.0 # Maksymalny zasięg czujnika laserowego
+sigma: 0.05 # Odchylenie standardowe związane z obserwacjami
+
+# Ustawienia odometrii
+odom_model_type: "omni-corrected" # Model odometrii
+odom_alpha1: 0.2 # Parametry modelu odometrii
+odom_alpha2: 0.2
+odom_alpha3: 0.2
+odom_alpha4: 0.2
+odom_frame: "odom" # Ramka odometrii
+
+# Ustawienia czujnika laserowego
+laser_max_beams: 3 # Maksymalna liczba wiązek laserowych
+laser_z_hit: 0.95 # Współczynnik trafień
+laser_z_short: 0.1 # Współczynnik trafień na krótkim dystansie
+laser_z_max: 0.05 # Współczynnik nietrafień
+laser_z_rand: 0.05 # Współczynnik trafień przypadkowych
+laser_sigma_hit: 0.2 # Odchylenie standardowe związane z trafieniami
+laser_lambda_short: 0.1 # Współczynnik wykładniczy związany z trafieniami na krótkim dystansie
+laser_likelihood_max_dist: 2.0 # Maksymalna odległość od przeszkody

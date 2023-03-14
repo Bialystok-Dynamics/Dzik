@@ -23,23 +23,12 @@
         <remap from="scan" to="laser/scan"/>
     </node>
 
-    <node name="zed_node" pkg="zed_wrapper" type="zed_wrapper_node" machine="argo_mini"
-          if="$(arg zed)">
-        <rosparam file="$(find zed_wrapper)/params/common.yaml" command="load"/>
-        <rosparam file="$(find zed_wrapper)/params/zed2.yaml" command="load"/>
-
-        <param name="general/zed_id" value="0"/>
-        <param name="general/gpu_id" value="-1"/>
-        <param name="general/camera_name" value="zed2"/>
-        <param name="general/base_frame" value="base_link"/>
-    </node>
-
-    <node pkg="laser_filters" type="scan_to_scan_filter_chain" name="laser_filter"
-          machine="argo_mini">
-        <rosparam command="load" file="$(find argo_mini)/config/laser_filter_config.yaml"/>
-        <remap from="scan" to="laser/scan"/>
-        <remap from="scan_filtered" to="laser/scan/filtered"/>
-    </node>
+<!--    <node pkg="laser_filters" type="scan_to_scan_filter_chain" name="laser_filter"-->
+<!--          machine="argo_mini">-->
+<!--        <rosparam command="load" file="$(find argo_mini)/config/laser_filter_config.yaml"/>-->
+<!--        <remap from="scan" to="laser/scan"/>-->
+<!--        <remap from="scan_filtered" to="laser/scan/filtered"/>-->
+<!--    </node>-->
 
     <include file="$(find argo_mini)/launch/mapping.launch" if="$(arg mapping)">
         <arg name="machine" value="argo_mini"/>
