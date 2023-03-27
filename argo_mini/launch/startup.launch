@@ -6,7 +6,7 @@
     <arg name="mapping" default="false"/>
     <arg name="amcl" default="false"/> <!-- use with test_easy_map on true-->
     <arg name="navigation" default="false"/>
-    <arg name="test_easy_map" default="false"/>
+    <arg name="world" default="test_easy"/><!-- warehouse test_easy -->
 
     <node name="rviz" pkg="rviz" type="rviz" if="$(arg rviz)" args="-d $(find argo_mini)/rviz/rviz.rviz">
         <remap from="/move_base_simple/goal" to="/argo_mini/move_base_simple/goal"/>
@@ -17,9 +17,9 @@
 
     <group if="$(arg simulation)">
         <include file="$(find aws_robomaker_small_warehouse_world)/launch/magazyn_z_18_tagami.launch"
-                 unless="$(arg test_easy_map)"/>
-        <include file="$(find gazebo_ros)/launch/empty_world.launch" if="$(arg test_easy_map)">
-            <arg name="world_name" value="$(find argo_mini)/world/test_easy.world"/>
+                 if="$(eval world=='warehouse')"/>
+        <include file="$(find gazebo_ros)/launch/empty_world.launch" unless="$(eval world=='warehouse')">
+            <arg name="world_name" value="$(find argo_mini)/worlds/test_easy.world" if="$(eval world=='test_easy')"/>
             <arg name="paused" default="false"/>
             <arg name="use_sim_time" default="true"/>
             <arg name="gui" default="true"/>
@@ -27,6 +27,8 @@
             <arg name="debug" default="false"/>
             <arg name="verbose" default="true"/>
         </include>
+
+
     </group>
 
     <group ns="argo_mini">
@@ -82,12 +84,12 @@
                 <arg name="drive" value="$(arg _remote_drive)"/>
             </include>
 
-            <node name="front_camera_node" type="ipcamera_driver" pkg="ipcamera_driver">
-                <param name="video_url" value="http://argo-mini.wlan:8080/?action=stream"/>
-                <param name="frame_id" value="front_camera_z"/>
+<!--            <node name="front_camera_node" type="ipcamera_driver" pkg="ipcamera_driver">-->
+<!--                <param name="video_url" value="http://argo-mini.wlan:8080/?action=stream"/>-->
+<!--                <param name="frame_id" value="front_camera_z"/>-->
 
-                <remap from="/camera/image" to="front_camera/image"/>
-            </node>
+<!--                <remap from="/camera/image" to="front_camera/image"/>-->
+<!--            </node>-->
 
         </group>
 
