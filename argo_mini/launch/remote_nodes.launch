@@ -1,9 +1,13 @@
 <launch>
     <arg name="zed" default="false"/>
     <arg name="mapping" default="false"/>
+    <arg name="amcl" default="false"/>
+    <arg name="navigation" default="false"/>
     <arg name="drive" default="6w"/>
+    <arg name="address" default="192.168.0.102"/>
 
-    <machine name="argo_mini" address="192.168.1.18" user="rafpi" password="argo"
+
+    <machine name="argo_mini" address="$(arg address)" user="rafpi" password="argo"
              env-loader="/home/rafpi/ws_dzik/env.sh"/>
     <node name="hardware_interface_node" pkg="argo_mini_hardware_interface" type="node" machine="argo_mini"
           required="true">
@@ -12,7 +16,7 @@
     </node>
 
     <group>
-        <machine name="argo_mini" address="192.168.1.18" user="rafpi" password="argo"
+        <machine name="argo_mini" address="$(arg address)" user="rafpi" password="argo"
                  env-loader="/home/rafpi/ws_dzik/env.sh" default="true" />
         <include file="$(find freenect_launch)/launch/freenect.launch"/>
     </group>
@@ -30,14 +34,16 @@
     <node pkg="tf" type="static_transform_publisher" name="laser_frame_broadcaster"
           args="0. 0. 0.03 3.14 0. 0.  camera_link laser_frame 500" />
 
-<!--    <node pkg="laser_filters" type="scan_to_scan_filter_chain" name="laser_filter"-->
-<!--          machine="argo_mini">-->
-<!--        <rosparam command="load" file="$(find argo_mini)/config/laser_filter_config.yaml"/>-->
-<!--        <remap from="scan" to="laser/scan"/>-->
-<!--        <remap from="scan_filtered" to="laser/scan/filtered"/>-->
-<!--    </node>-->
 
     <include file="$(find argo_mini)/launch/mapping.launch" if="$(arg mapping)">
+        <arg name="machine" value="argo_mini"/>
+    </include>
+
+    <include file="$(find argo_mini)/launch/amcl.launch" if="$(arg amcl)">
+        <arg name="machine" value="argo_mini"/>
+    </include>
+
+    <include file="$(find argo_mini)/launch/navigation.launch" if="$(arg navigation)">
         <arg name="machine" value="argo_mini"/>
     </include>
 </launch>
