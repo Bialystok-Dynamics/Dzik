@@ -1,10 +1,9 @@
 <launch>
-    <arg name="zed" default="false"/>
     <arg name="mapping" default="false"/>
     <arg name="amcl" default="false"/>
     <arg name="navigation" default="false"/>
     <arg name="drive" default="6w"/>
-    <arg name="address" default="192.168.0.102"/>
+    <arg name="address" default="192.168.1.18"/>
 
 
     <machine name="argo_mini" address="$(arg address)" user="rafpi" password="argo"
@@ -25,14 +24,14 @@
           machine="argo_mini" launch-prefix="bash -c 'sleep 5.0; $0 $@' ">
         <param name="serial_port"         type="string" value="/dev/ttyUSB0"/>
         <param name="serial_baudrate"     type="int"    value="256000"/><!--A3 -->
-        <param name="frame_id"            type="string" value="laser_frame"/>
+        <param name="frame_id"            type="string" value="rp_lidar_a1"/>
         <param name="inverted"            type="bool"   value="false"/>
         <param name="angle_compensate"    type="bool"   value="true"/>
         <param name="scan_mode"           type="string" value="Sensitivity"/>
     </node>
 
     <node pkg="tf" type="static_transform_publisher" name="laser_frame_broadcaster"
-          args="0. 0. 0.03 3.14 0. 0.  camera_link laser_frame 500" />
+          args="0. 0. 0.0 3.14 0. 3.14 rp_lidar_a1 camera_link 500" />
 
 
     <include file="$(find argo_mini)/launch/mapping.launch" if="$(arg mapping)">

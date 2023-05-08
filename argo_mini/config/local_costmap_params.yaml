@@ -2,8 +2,8 @@ local_costmap:
   global_frame: odom # Globalna ramka, w której ma działać costmap
   robot_base_frame: base_footprint # Nazwa bazowego linka robota.
 
-  update_frequency: 10.0 # Częstotliwość w Hz, z jaką ma być aktualizowana mapa.
-  publish_frequency: 10.0 # Częstotliwość w Hz, z jaką mają być publikowane informacje o wyświetlaniu mapy.
+  update_frequency: 5.0 # Częstotliwość w Hz, z jaką ma być aktualizowana mapa.
+  publish_frequency: 5.0 # Częstotliwość w Hz, z jaką mają być publikowane informacje o wyświetlaniu mapy.
   transform_tolerance: 0.5  # Określa opóźnienie w danych transformacji (tf), które jest tolerowane w sekundach.
 
   #  Parametr rolling_window sprawia, że mapa kosztów jest wyśrodkowana wokół robota.

@@ -1,12 +1,12 @@
 <launch>
     <arg name="simulation" default="true"/>
     <arg name="rviz" default="true"/>
-    <arg name="peripheral" default=""/>
-    <arg name="drive" default="6w"/>
+    <arg name="world" default="pb"/> <!-- warehouse easy pb -->
     <arg name="mapping" default="false"/>
     <arg name="amcl" default="false"/> <!-- use with easy or pb map -->
     <arg name="navigation" default="false"/>
-    <arg name="world" default="easy"/> <!-- warehouse easy pb -->
+    <arg name="drive" default="6w"/>
+    <arg name="peripheral" default=""/>
 
     <node name="rviz" pkg="rviz" type="rviz" if="$(arg rviz)" args="-d $(find argo_mini)/rviz/rviz.rviz">
         <remap from="/move_base_simple/goal" to="/argo_mini/move_base_simple/goal"/>
@@ -60,13 +60,7 @@
         <group if="$(arg simulation)">
 
             <node name="spawn_model" pkg="gazebo_ros" type="spawn_model"
-                  args="-param '/argo_mini/robot_description' -urdf -model argo_mini "/>
-
-<!--            <node pkg="laser_filters" type="scan_to_scan_filter_chain" name="laser_filter">-->
-<!--                <rosparam command="load" file="$(find argo_mini)/config/laser_filter_config.yaml"/>-->
-<!--                <remap from="scan" to="laser/scan"/>-->
-<!--                <remap from="scan_filtered" to="laser/scan/filtered"/>-->
-<!--            </node>-->
+                  args="-param '/argo_mini/robot_description' -urdf -model argo_mini -Y 3.14"/>
 
             <include file="$(find argo_mini)/launch/mapping.launch" if="$(arg mapping)"/>
 
@@ -82,7 +76,6 @@
             <arg name="_remote_drive" value="6w" if="$(eval drive=='6w')"/>
 
             <include file="$(find argo_mini)/launch/remote_nodes.launch">
-                <arg name="zed" value="$(eval peripheral == 'zed' or peripheral == 'zed_gimbal')"/>
                 <arg name="mapping" value="$(arg mapping)"/>
                 <arg name="amcl" value="$(arg amcl)"/>
                 <arg name="navigation" value="$(arg navigation)"/>
@@ -95,7 +88,6 @@
 
 <!--                <remap from="/camera/image" to="front_camera/image"/>-->
 <!--            </node>-->
-
         </group>
 
         <include file="$(find argo_mini)/launch/joy_steering.launch"/>
