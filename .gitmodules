@@ -1,6 +1,6 @@
 [submodule "serial"]
-	path = serial
+	path = src/serial
 	url = https://github.com/wjwwood/serial.git
 [submodule "ipcamera_driver"]
-	path = ipcamera_driver
+	path = src/ipcamera_driver
 	url = https://github.com/alireza-hosseini/ipcamera_driver
