@@ -1,5 +1,5 @@
 #!/usr/bin/bash
 
-catkin_make
+catkin build
 source devel/setup.bash
 roslaunch argo_mini startup.launch rviz:=false
