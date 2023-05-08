@@ -17,6 +17,9 @@
   <exec_depend>gazebo_ros</exec_depend>
   <exec_depend>laser_filters</exec_depend>
   <exec_depend>ipcamera_driver</exec_depend>
+  <exec_depend>joint_state_controller</exec_depend>
+  <exec_depend>ros_control</exec_depend>
+  <exec_depend>xacro</exec_depend>
 
   <export>
 
