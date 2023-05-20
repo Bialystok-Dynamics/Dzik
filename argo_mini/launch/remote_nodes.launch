@@ -6,11 +6,10 @@
 <!--    <arg name="address" default="192.168.1.18"/>-->
     <arg name="address" default="192.168.0.100"/>
 
-
     <machine name="argo_mini" address="$(arg address)" user="rafpi" password="argo"
              env-loader="/home/rafpi/ws_dzik/env.sh"/>
-    <node name="hardware_interface_node" pkg="argo_mini_hardware_interface" type="node" machine="argo_mini"
-          required="true">
+    <node name="hardware_interface_node" pkg="argo_mini_hardware_interface"
+          type="node" machine="argo_mini" required="true">
         <rosparam command="load" file="$(find argo_mini)/config/hardware.yaml"/>
         <param name="argo_mini/drive" value="$(arg drive)"/>
     </node>
@@ -33,7 +32,6 @@
 
     <node pkg="tf" type="static_transform_publisher" name="laser_frame_broadcaster"
           args="0.15 0. 0.0 3.14 0. 3.14 rp_lidar_a1 camera_link 500" />
-
 
     <include file="$(find argo_mini)/launch/mapping.launch" if="$(arg mapping)">
         <arg name="machine" value="argo_mini"/>

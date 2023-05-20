@@ -11,5 +11,4 @@
     <rosparam file="$(find argo_mini)/config/base_local_planner_params.yaml" command="load" />
     <rosparam file="$(find argo_mini)/config/dwa_local_planner_params.yaml" command="load" />
   </node>
-
 </launch>

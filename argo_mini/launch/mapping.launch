@@ -12,7 +12,7 @@
 
 <!--    gmapping-->
     <node name="slam_node" pkg="gmapping" type="slam_gmapping" machine="$(arg machine)">
-        <rosparam command="load" file="$(find argo_mini)/config/gmapping_config.yaml"/>
+<!--        <rosparam command="load" file="$(find argo_mini)/config/gmapping_config.yaml"/>-->
         <remap from="scan" to="laser/scan"/>"
     </node>
 

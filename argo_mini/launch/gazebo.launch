@@ -1,0 +1,23 @@
+<launch>
+    <arg name="ns" default="argo_mini"/>
+    <arg name="world" default="pb"/>
+    <arg name="paused" default="false"/>
+
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="world_name" value="$(find argo_mini)/worlds/test_easy.world" if="$(eval world=='easy')"/>
+        <arg name="world_name" value="$(find argo_mini)/worlds/pb.world" if="$(eval world=='pb')"/>
+        <arg name="world_name" value="$(find aws_robomaker_small_warehouse_world)/worlds/magazyn_z_18_tagami.world"
+             if="$(eval world=='warehouse')"/>
+
+        <arg name="paused" default="$(arg paused)"/>
+        <arg name="use_sim_time" default="true"/>
+        <arg name="gui" default="true"/>
+        <arg name="headless" default="false"/>
+        <arg name="debug" default="false"/>
+        <arg name="verbose" default="true"/>
+    </include>
+    <node name="spawn_model" pkg="gazebo_ros" type="spawn_model"
+          args="-param '/argo_mini/robot_description' -urdf -model argo_mini -Y 3.14" ns="$(arg ns)"/>
+
+    <node pkg="argo_mini" name="ctrl_c_gazebo" type="ctrl_c_gazebo.py" respawn="false" output="screen"/>
+</launch>
