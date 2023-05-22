@@ -44,8 +44,8 @@
 
     <xacro:macro name="gazebo_wheel" params="link">
         <gazebo reference="${link}">
-            <mu1>0.7</mu1>
-            <mu2>0.7</mu2>
+            <mu1>0.2</mu1>
+            <mu2>0.2</mu2>
 
             <fdir1>1 0 0</fdir1>
             <maxContacts>20</maxContacts>

@@ -1,0 +1,34 @@
+# plik konfiguracyjny gmapping dla RP lidar a3
+
+# Ustawienia ogólne
+map_update_interval: 5.0 # Częstotliwość aktualizacji mapy (im mniejsza liczba tym czciej) (zbyt czste odwierzanie obciaza obliczanie)
+
+maxUrange: 25.0 # Maksymalny zasięg czujnika laserowego 
+sigma: 0.05 # Odchylenie standardowe związane z obserwacjami(?)
+
+kernelSize: 1 #rozmiar jadra
+lstep: 0.05 #The optimization step in translation
+astep: 0.05 #The optimization step in rotation
+iterations: 5 #The number of iterations of the scanmatcher
+lsigma: 0.075 #The sigma of a beam used for likelihood computation
+ogain: 3.0 #Gain to be used while evaluating the likelihood, for smoothing the resampling effects
+lskip: 0 #Number of beams to skip in each scan. Take only every (n+1)th laser ray for computing a match (0 = take all rays)
+minimumScore: 50 #Minimum score for considering the outcome of the scan matching good. Can avoid jumping pose estimates in large open spaces when using laser scanners with limited range (e.g. 5m). Scores go up to 600+, try 50 for example when experiencing jumping estimate issues.
+srr: 0.1 #Odometry error in translation as a function of translation (rho/rho)
+srt: 0.2 #Odometry error in translation as a function of rotation (rho/theta)
+str: 0.1 #Odometry error in rotation as a function of translation (theta/rho)
+stt: 0.2 #Odometry error in rotation as a function of rotation (theta/theta)
+linearUpdate: 0.2 #Process a scan each time the robot translates this far
+angularUpdate: 0.1 #Process a scan each time the robot rotates this far
+#temporalUpdate: 0.5 #Process a scan if the last scan processed is older than the update time in seconds. A value less than zero will turn time based updates off. (updatuje do terminala skubany)
+resampleThreshold: 0.5 #The Neff based resampling threshold
+particles: 100 #Number of particles in the filter 
+xmin: -10.0 #Initial map size (in metres) 
+ymin: -10.0
+xmax: 10.0
+ymax: 10.0
+delta: 0.05
+llsamplerange: 0.01 #Translational sampling range for the likelihood 
+llsamplestep: 0.01
+lasamplerange: 0.005
+lasamplestep: 0.005

@@ -1,13 +1,15 @@
 <launch>
-  <arg name="machine" default=""/>
-  <arg name="map" default="easy"/>
+	<arg name="machine" default=""/>
+	<arg name="map" default="map"/>
+	
+<arg name="map_file" default="$(find aws_robomaker_small_warehouse_world)/maps/005/map.yaml" if="$(eval map=='map')"/>
+	
+<node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" output="screen"/>
 
-  <arg name="map_file" default="$(find argo_mini)/maps/map01.yaml" if="$(eval map=='easy')"/>
-  <arg name="map_file" default="$(find argo_mini)/maps/pb.yaml" if="$(eval map=='pb')"/>
+<node name="amcl_node" pkg="amcl" type="amcl" output="screen" machine="$(arg machine)">
+	<rosparam command="load" file="$(find argo_mini)/config/amcl_conf.yaml"/>
+	<remap from="scan" to="laser/scan"/>
 
-  <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" output="screen"/>
-  <node name="amcl_node" pkg="amcl" type="amcl" output="screen" machine="$(arg machine)">
-    <rosparam command="load" file="$(find argo_mini)/config/amcl.yaml"/>
-    <remap from="scan" to="laser/scan"/>
-  </node>
+</node>
+	
 </launch>

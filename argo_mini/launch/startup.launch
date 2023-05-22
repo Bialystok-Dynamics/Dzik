@@ -3,10 +3,13 @@
     <arg name="rviz" default="true"/>
     <arg name="peripheral" default=""/>
     <arg name="drive" default="6w"/>
-    <arg name="mapping" default="false"/>
-    <arg name="amcl" default="false"/> <!-- use with easy or pb map -->
-    <arg name="navigation" default="false"/>
-    <arg name="world" default="easy"/> <!-- warehouse easy pb -->
+    <arg name="mapping" default="true"/>
+    <arg name="amcl" default="false"/>
+    <arg name="nav" default="true"/>
+    <arg name="rrt" default="true"/>
+
+    <include file="$(find aws_robomaker_small_warehouse_world)/launch/magazyn_z_18_tagami.launch"
+             if="$(arg simulation)"/>
 
     <node name="rviz" pkg="rviz" type="rviz" if="$(arg rviz)" args="-d $(find argo_mini)/rviz/rviz.rviz">
         <remap from="/move_base_simple/goal" to="/argo_mini/move_base_simple/goal"/>
@@ -14,21 +17,6 @@
 
     <rosparam file="$(find argo_mini)/config/controllers_info.yaml"/>
     <rosparam file="$(find argo_mini)/config/hardware.yaml" unless="$(arg simulation)"/>
-
-    <group if="$(arg simulation)">
-        <include file="$(find aws_robomaker_small_warehouse_world)/launch/magazyn_z_18_tagami.launch"
-                 if="$(eval world=='warehouse')"/>
-        <include file="$(find gazebo_ros)/launch/empty_world.launch" unless="$(eval world=='warehouse')">
-            <arg name="world_name" value="$(find argo_mini)/worlds/test_easy.world" if="$(eval world=='easy')"/>
-            <arg name="world_name" value="$(find argo_mini)/worlds/pb.world" if="$(eval world=='pb')"/>
-            <arg name="paused" default="false"/>
-            <arg name="use_sim_time" default="true"/>
-            <arg name="gui" default="true"/>
-            <arg name="headless" default="false"/>
-            <arg name="debug" default="false"/>
-            <arg name="verbose" default="true"/>
-        </include>
-    </group>
 
     <group ns="argo_mini">
         <arg name="_drive" value="argo_mini_urdf_6w_drive" if="$(eval drive=='6w')"/>
@@ -60,7 +48,7 @@
         <group if="$(arg simulation)">
 
             <node name="spawn_model" pkg="gazebo_ros" type="spawn_model"
-                  args="-param '/argo_mini/robot_description' -urdf -model argo_mini "/>
+                  args="-param '/argo_mini/robot_description' -urdf -model argo_mini"/>
 
 <!--            <node pkg="laser_filters" type="scan_to_scan_filter_chain" name="laser_filter">-->
 <!--                <rosparam command="load" file="$(find argo_mini)/config/laser_filter_config.yaml"/>-->
@@ -69,14 +57,14 @@
 <!--            </node>-->
 
             <include file="$(find argo_mini)/launch/mapping.launch" if="$(arg mapping)"/>
-
-            <include file="$(find argo_mini)/launch/amcl.launch" if="$(arg amcl)">
-                <arg name="map" value="$(arg world)"/>
-            </include>
-
-            <include file="$(find argo_mini)/launch/navigation.launch" if="$(arg navigation)"/>
+            <include file="$(find argo_mini)/launch/amcl.launch" if="$(arg amcl)"/>
+            <include file="$(find argo_mini)/launch/navigation.launch" if="$(arg nav)"/>
+            <include file="$(find rrt_exploration)/launch/simple.launch" if="$(arg rrt)"/>
             <node pkg="argo_mini" name="ctrl_c_gazebo" type="ctrl_c_gazebo.py" respawn="false" output="screen"/>
         </group>
+        
+
+
 
         <group unless="$(arg simulation)">
             <arg name="_remote_drive" value="6w" if="$(eval drive=='6w')"/>
@@ -84,17 +72,15 @@
             <include file="$(find argo_mini)/launch/remote_nodes.launch">
                 <arg name="zed" value="$(eval peripheral == 'zed' or peripheral == 'zed_gimbal')"/>
                 <arg name="mapping" value="$(arg mapping)"/>
-                <arg name="amcl" value="$(arg amcl)"/>
-                <arg name="navigation" value="$(arg navigation)"/>
                 <arg name="drive" value="$(arg _remote_drive)"/>
             </include>
 
-<!--            <node name="front_camera_node" type="ipcamera_driver" pkg="ipcamera_driver">-->
-<!--                <param name="video_url" value="http://argo-mini.wlan:8080/?action=stream"/>-->
-<!--                <param name="frame_id" value="front_camera_z"/>-->
+            <node name="front_camera_node" type="ipcamera_driver" pkg="ipcamera_driver">
+                <param name="video_url" value="http://argo-mini.wlan:8080/?action=stream"/>
+                <param name="frame_id" value="front_camera_z"/>
 
-<!--                <remap from="/camera/image" to="front_camera/image"/>-->
-<!--            </node>-->
+                <remap from="/camera/image" to="front_camera/image"/>
+            </node>
 
         </group>
 
