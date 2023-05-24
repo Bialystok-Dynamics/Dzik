@@ -44,7 +44,7 @@ def node():
 	info_multiplier=rospy.get_param('~info_multiplier',3.0)		
 	hysteresis_radius=rospy.get_param('~hysteresis_radius',3.0)			#at least as much as the laser scanner range
 	hysteresis_gain=rospy.get_param('~hysteresis_gain',2.0)				#bigger than 1 (biase robot to continue exploring current region
-	frontiers_topic= rospy.get_param('~frontiers_topic','/filtered_points')	
+	frontiers_topic= rospy.get_param('~frontiers_topic','/argo_mini/filtered_points')	
 	n_robots = rospy.get_param('~n_robots',1)
 	namespace = rospy.get_param('~namespace','')
 	namespace_init_count = rospy.get_param('namespace_init_count',1)
@@ -53,8 +53,8 @@ def node():
 	
 	rate = rospy.Rate(rateHz)
 #-------------------------------------------
-	rospy.Subscriber(map_topic, OccupancyGrid, mapCallBack)
-	rospy.Subscriber(frontiers_topic, PointArray, callBack)
+	jol = rospy.Subscriber(map_topic, OccupancyGrid, mapCallBack)
+	elo = rospy.Subscriber(frontiers_topic, PointArray, callBack)
 #---------------------------------------------------------------------------------------------------------------
 		
 # wait if no frontier is received yet 

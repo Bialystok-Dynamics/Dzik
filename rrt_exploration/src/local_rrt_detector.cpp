@@ -7,6 +7,7 @@
 #include "stdint.h"
 #include "functions.h"
 #include "mtrand.h"
+#include <ros/console.h>
 
 
 #include "nav_msgs/OccupancyGrid.h"
@@ -34,6 +35,7 @@ rdm r; // for genrating random numbers
 void mapCallBack(const nav_msgs::OccupancyGrid::ConstPtr& msg)
 {
 mapData=*msg;
+	ROS_INFO("callback, %d", mapData.data.size());
 }
 
 
@@ -75,8 +77,8 @@ int main(int argc, char **argv)
   ns=ros::this_node::getName();
 
   ros::param::param<float>(ns+"/eta", eta, 0.5);
-  ros::param::param<std::string>(ns+"/map_topic", map_topic, "/robot_1/map"); 
-  ros::param::param<std::string>(ns+"/robot_frame", base_frame_topic, "/robot_1/base_link"); 
+  ros::param::param<std::string>(ns+"/map_topic", map_topic, "/argo_mini/map"); 
+  ros::param::param<std::string>(ns+"/robot_frame", base_frame_topic, "/base_link"); 
 //---------------------------------------------------------------
 ros::Subscriber sub= nh.subscribe(map_topic, 100 ,mapCallBack);	
 ros::Subscriber rviz_sub= nh.subscribe("/clicked_point", 100 ,rvizCallBack);	
@@ -88,9 +90,12 @@ ros::Rate rate(100);
  
  
 // wait until map is received, when a map is received, mapData.header.seq will not be < 1  
-while (mapData.header.seq<1 or mapData.data.size()<1)  {  ros::spinOnce();  ros::Duration(0.1).sleep();}
+while (mapData.data.size()<1)  { 
+    ROS_INFO("Waitimg for map seq %d, size %u", mapData.header.seq , mapData.data.size());
+	 ros::spinOnce();  ros::Duration(0.1).sleep();
+	 }
 
-
+ROS_INFO("Map received");
 
 //visualizations  points and lines..
 points.header.frame_id=mapData.header.frame_id;
@@ -137,6 +142,7 @@ ros::spinOnce();
 pub.publish(points) ;
 }
 
+ROS_INFO("Points received");
 
 
 
