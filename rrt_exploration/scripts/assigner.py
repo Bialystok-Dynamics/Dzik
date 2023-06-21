@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-
+#assigner zarzadza w przypadku wielu robotow przy jednym minimal koszt i kaze jechac do najblizszego punktu frontier 
 #--------Include modules---------------
 from copy import copy
 import rospy
@@ -65,6 +65,7 @@ def node():
 	while (len(mapData.data)<1):
 		pass
 
+	
 	robots=[]
 	if len(namespace)>0:
 		for i in range(0,n_robots):

@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+#rozwiazano zmieniajac funkcje informationGain z functions.py nie otrzymujemy centroids filtered_points pusto, frontiers git!!!
+# centroids czasem potrzebuja chwili ale to moze m,oj komp
 # --------Include modules---------------
 from copy import copy
 import rospy
@@ -116,7 +118,6 @@ def node():
     # wait if no frontier is received yet
     while len(frontiers) < 1:
         pass
-
     points = Marker()
     points_clust = Marker()
 # Set the frame ID and timestamp.  See the TF tutorials for information on these.
@@ -212,7 +213,11 @@ def node():
                     globalmaps[i].header.frame_id, temppoint)
                 x = array([transformedPoint.point.x, transformedPoint.point.y])
                 cond = (gridValue(globalmaps[i], x) > threshold) or cond
+                # w funcions.py jest funkcja do tego i tam wartosc wieksza od r nie inkrementuja gaina(zmieniona i poprawiona juz dziala)
+                # print(informationGain(mapData, [centroids[z][0], centroids[z][1]], info_radius*0.5))
+
             if (cond or (informationGain(mapData, [centroids[z][0], centroids[z][1]], info_radius*0.5)) < 0.2):
+                #rospy.loginfo(str(centroids[z][0]) +" "+ str(centroids[z][1]))
                 centroids = delete(centroids, (z), axis=0)
                 z = z-1
             z += 1
@@ -222,6 +227,7 @@ def node():
         for i in centroids:
             tempPoint.x = i[0]
             tempPoint.y = i[1]
+            rospy.loginfo("arraypoints: %d %d",tempPoint.x,tempPoint.y ) 
             arraypoints.points.append(copy(tempPoint))
         filterpub.publish(arraypoints)
         pp = []
@@ -236,6 +242,7 @@ def node():
             p.y = centroids[q][1]
             pp.append(copy(p))
         points_clust.points = pp
+        # rospy.loginfo("pp:" + str(points_clust)) 
         pub.publish(points)
         pub2.publish(points_clust)
         rate.sleep()
