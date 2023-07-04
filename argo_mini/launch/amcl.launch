@@ -1,13 +1,15 @@
 <launch>
   <arg name="machine" default=""/>
   <arg name="map" default="easy"/>
+  <arg name="argo_mini_path" default="$(find argo_mini)"/>
 
-  <arg name="map_file" default="$(find argo_mini)/maps/map01.yaml" if="$(eval map=='easy')"/>
-  <arg name="map_file" default="$(find argo_mini)/maps/pb.yaml" if="$(eval map=='pb')"/>
+  <arg name="map_file" default="$(arg argo_mini_path)/maps/map01.yaml" if="$(eval map=='easy')"/>
+  <arg name="map_file" default="$(arg argo_mini_path)/maps/pb.yaml" if="$(eval map=='pb')"/>
 
-  <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" output="screen"/>
+  <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)"
+        output="screen" machine="$(arg machine)"/>
   <node name="amcl_node" pkg="amcl" type="amcl" output="screen" machine="$(arg machine)">
-    <rosparam command="load" file="$(find argo_mini)/config/amcl.yaml"/>
+    <rosparam command="load" file="$(arg argo_mini_path)/config/amcl.yaml"/>
     <remap from="scan" to="laser/scan"/>
   </node>
 </launch>

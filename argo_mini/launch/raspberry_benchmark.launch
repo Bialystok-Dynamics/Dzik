@@ -1,19 +1,39 @@
 <launch>
+    <arg name="rviz" default="true"/>
     <arg name="world" default="pb"/> <!-- warehouse easy pb -->
-
-    <include file="$(find argo_mini)/launch/gazebo.launch">
-        <arg name="world" default="pb"/>
-    </include>
+    <arg name="mapping" default="true"/>
+    <arg name="amcl" default="true"/> <!-- use with easy or pb map -->
+    <arg name="navigation" default="true"/>
+<!--     <arg name="rrt_exploration" default="false"/> -->
+    <rosparam file="$(find argo_mini)/config/controllers_info.yaml"/>
+    <rosparam file="$(find argo_mini)/config/hardware.yaml"/>
 
     <node name="rviz" pkg="rviz" type="rviz" if="$(arg rviz)" args="-d $(find argo_mini)/rviz/rviz.rviz">
         <remap from="/move_base_simple/goal" to="/argo_mini/move_base_simple/goal"/>
     </node>
 
-    <include file="$(find argo_mini)/launch/remote_nodes.launch">
-        <arg name="mapping" default="true"/>
-        <arg name="amcl" default="true"/>
-        <arg name="navigation" default="true"/>
-        <arg name="drive" default="6w"/>
-        <arg name="address" default="192.168.1.18"/>
+    <include file="$(find argo_mini)/launch/gazebo.launch">
+        <arg name="world" default="pb"/>
     </include>
+
+    <group ns="argo_mini">
+        <param name="robot_description"
+               command="$(find xacro)/xacro $(find argo_mini_urdf_podstawa)/urdf/argo_mini_urdf_podstawa.xacro
+               drive:=argo_mini_urdf_6w_drive peripheral:=''"/>
+
+        <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
+              args="joint_state_controller 6w_controller"/>
+
+        <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="false"/>
+
+        <include file="$(find argo_mini)/launch/remote_nodes.launch">
+            <arg name="mapping" value="$(arg mapping)"/>
+            <arg name="amcl" value="$(arg amcl)"/>
+            <arg name="world" value="$(arg world)"/>
+            <arg name="navigation" value="$(arg navigation)"/>
+            <arg name="drive" value="6w"/>
+        </include>
+
+        <include file="$(find argo_mini)/launch/joy_steering.launch"/>
+    </group>
 </launch>

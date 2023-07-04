@@ -3,16 +3,18 @@
     <arg name="amcl" default="false"/>
     <arg name="navigation" default="false"/>
     <arg name="drive" default="6w"/>
+    <arg name="world" default="pb"/>
     <arg name="address" default="192.168.1.18"/>
+
 <!--     <arg name="address" default="192.168.0.100"/> -->
 
     <machine name="argo_mini" address="$(arg address)" user="rafpi" password="argo"
              env-loader="/home/rafpi/ws_dzik/env.sh"/>
-    <node name="hardware_interface_node" pkg="argo_mini_hardware_interface"
-          type="node" machine="argo_mini" required="true">
-        <rosparam command="load" file="$(find argo_mini)/config/hardware.yaml"/>
-        <param name="argo_mini/drive" value="$(arg drive)"/>
-    </node>
+<!--     <node name="hardware_interface_node" pkg="argo_mini_hardware_interface" -->
+<!--           type="node" machine="argo_mini" required="true"> -->
+<!--         <rosparam command="load" file="$(find argo_mini)/config/hardware.yaml"/> -->
+<!--         <param name="argo_mini/drive" value="$(arg drive)"/> -->
+<!--     </node> -->
 
 <!--     <node name="rplidarNode" pkg="rplidar_ros" type="rplidarNode" output="screen" -->
 <!--           machine="argo_mini" launch-prefix="bash -c 'sleep 5.0; $0 $@' "> -->
@@ -33,6 +35,8 @@
 
     <include file="$(find argo_mini)/launch/amcl.launch" if="$(arg amcl)">
         <arg name="machine" value="argo_mini"/>
+        <arg name="map" value="$(arg world)"/>
+        <arg name="argo_mini_path" value="/home/rafpi/ws_dzik/src/argo_mini"/>
     </include>
 
     <include file="$(find argo_mini)/launch/navigation.launch" if="$(arg navigation)">

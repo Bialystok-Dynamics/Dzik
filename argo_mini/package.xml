@@ -19,6 +19,10 @@
 <!--  <exec_depend>gazebo_ros</exec_depend>-->
   <exec_depend>laser_filters</exec_depend>
   <exec_depend>ipcamera_driver</exec_depend>
+  <exec_depend>slam_gmapping</exec_depend>
+  <exec_depend>map_server</exec_depend>
+  <exec_depend>amcl</exec_depend>
+  <exec_depend>move_base</exec_depend>
 
   <export>
 
