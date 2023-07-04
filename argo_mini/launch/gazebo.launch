@@ -19,5 +19,5 @@
     <node name="spawn_model" pkg="gazebo_ros" type="spawn_model"
           args="-param '/argo_mini/robot_description' -urdf -model argo_mini -Y 3.14" ns="$(arg ns)"/>
 
-    <node pkg="argo_mini" name="ctrl_c_gazebo" type="ctrl_c_gazebo.py" respawn="false" output="screen"/>
+<!--     <node pkg="argo_mini" name="ctrl_c_gazebo" type="ctrl_c_gazebo.py" respawn="false" output="screen"/> -->
 </launch>
