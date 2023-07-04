@@ -13,7 +13,7 @@ for argo_mini_urdf_6w_drive robot</p>
   <depend>robot_state_publisher</depend>
   <depend>rviz</depend>
   <depend>joint_state_publisher_gui</depend>
-  <depend>gazebo</depend>
+<!--  <depend>gazebo</depend>-->
   <export>
     <architecture_independent />
   </export>

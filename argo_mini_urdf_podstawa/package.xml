@@ -13,7 +13,7 @@ for argo_mini_urdf_podstawa robot</p>
   <depend>robot_state_publisher</depend>
   <depend>rviz</depend>
   <depend>joint_state_publisher_gui</depend>
-  <depend>gazebo</depend>
+<!--  <depend>gazebo</depend>-->
   <depend>xacro</depend>
   <export>
     <architecture_independent />
