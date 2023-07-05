@@ -4,7 +4,7 @@
     <arg name="paused" default="false"/>
 
     <include file="$(find gazebo_ros)/launch/empty_world.launch">
-        <arg name="world_name" value="$(find argo_mini)/worlds/test_easy.world" if="$(eval world=='easy')"/>
+        <arg name="world_name" value="$(find argo_mini)/worlds/test_easy.world" if="$(eval world=='map01')"/>
         <arg name="world_name" value="$(find argo_mini)/worlds/pb.world" if="$(eval world=='pb')"/>
         <arg name="world_name" value="$(find aws_robomaker_small_warehouse_world)/worlds/magazyn_z_18_tagami.world"
              if="$(eval world=='warehouse')"/>

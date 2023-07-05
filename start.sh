@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-export ROS_MASTER_URI=http://192.168.4.20:11311
-export ROS_IP=192.168.4.20
+export ROS_IP=192.168.1.11
 
-DIR="$( cd "$(dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd)" 
-source $DIR/../devel/setup.bash
-roslaunch argo_mini startup.launch mapping:=true
+source /opt/ros/noetic/setup.bash
+source /home/rav/ws_dzik/devel/setup.bash
+
+roslaunch argo_mini raspberry_benchmark.launch mapping:=true amcl:=false navigation:=false

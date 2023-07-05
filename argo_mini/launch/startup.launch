@@ -1,9 +1,9 @@
 <launch>
     <arg name="simulation" default="true"/>
     <arg name="rviz" default="true"/>
-    <arg name="world" default="pb"/> <!-- warehouse easy pb -->
+    <arg name="world" default="pb"/> <!-- warehouse map01 pb -->
     <arg name="mapping" default="false"/>
-    <arg name="amcl" default="false"/> <!-- use with easy or pb map -->
+    <arg name="amcl" default="false"/> <!-- use with map01 or pb map -->
     <arg name="navigation" default="false"/>
     <arg name="rrt_exploration" default="false"/>
     <rosparam file="$(find argo_mini)/config/controllers_info.yaml"/>

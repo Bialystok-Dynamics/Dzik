@@ -2,8 +2,8 @@
 min_particles:             100  # Minimalna dopuszczalna liczba cząstek
 max_particles:             3000 # Maksymalna dopuszczalna liczba cząstek
 kld_err:                   0.002 # Błąd maksymalny między rozkładem prawdziwym a rozkładem oszacowanym
-update_min_d:              0.20 # Ruch translacyjny wymagany przed wykonaniem aktualizacji filtra. [m]
-update_min_a:              0.10 # Ruch obrotowy wymagany przed wykonaniem aktualizacji filtra.[rad]
+update_min_d:              0.10 # Ruch translacyjny wymagany przed wykonaniem aktualizacji filtra. [m]
+update_min_a:              0.05 # Ruch obrotowy wymagany przed wykonaniem aktualizacji filtra.[rad]
 resample_interval:         2    # Liczba aktualizacji filtra wymaganych przed ponownym próbkowaniem
 transform_tolerance:       0.5  # Tolerancja opóźnienia transformacji [s]
 recovery_alpha_slow:       0.001

@@ -62,9 +62,11 @@ argo_mini:
       linear:
         x:
           has_velocity_limits: false
-          has_acceleration_limits: true
+          has_acceleration_limits: false
           has_jerk_limits: false
-
+#          has_velocity_limits: false
+#          has_acceleration_limits: true
+#          has_jerk_limits: false
           max_velocity: 1.0  # m/s
           min_velocity: -0.5 # m/s
 
@@ -75,8 +77,11 @@ argo_mini:
           min_jerk: -5.0  # m/s^3
         y:
           has_velocity_limits: false
-          has_acceleration_limits: true
+          has_acceleration_limits: false
           has_jerk_limits: false
+#          has_velocity_limits: false
+#          has_acceleration_limits: true
+#          has_jerk_limits: false
 
           max_velocity: 1.0  # m/s
           min_velocity: -0.5 # m/s

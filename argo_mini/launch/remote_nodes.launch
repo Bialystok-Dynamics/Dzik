@@ -36,7 +36,6 @@
     <include file="$(find argo_mini)/launch/amcl.launch" if="$(arg amcl)">
         <arg name="machine" value="argo_mini"/>
         <arg name="map" value="$(arg world)"/>
-        <arg name="argo_mini_path" value="/home/rafpi/ws_dzik/src/argo_mini"/>
     </include>
 
     <include file="$(find argo_mini)/launch/navigation.launch" if="$(arg navigation)">
