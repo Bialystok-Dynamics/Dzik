@@ -232,7 +232,7 @@
                 </noise>
             </ray>
             <plugin name="gazebo_ros_head_hokuyo_controller" filename="libgazebo_ros_laser.so">
-                <topicName>/argo_mini/laser/scan</topicName>
+                <topicName>/argo_mini/scan</topicName>
                 <frameName>/rp_lidar_a1</frameName>
             </plugin>
         </sensor>

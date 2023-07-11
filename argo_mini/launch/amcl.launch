@@ -3,7 +3,7 @@
   <arg name="x_init_value" default="0"/>
   <arg name="y_init_value" default="0"/>
   <arg name="a_init_value" default="0"/>
-  <arg name="scan_topic"     default="laser/scan"/>
+  <arg name="scan_topic"     default="scan"/>
   <arg name="machine" default=""/>
   <arg name="map" default="map01"/>
 

@@ -13,7 +13,7 @@ plugins:
 # http://wiki.ros.org/costmap_2d/hydro/obstacles
 obstacles_layer:
   observation_sources: scan
-  scan: {sensor_frame: rp_lidar_a1, data_type: LaserScan, topic: laser/scan, marking: true,
+  scan: {sensor_frame: rp_lidar_a1, data_type: LaserScan, topic: scan, marking: true,
          clearing: true, obstacle_range: 3.0, raytrace_range: 2.5}
 
 # http://wiki.ros.org/costmap_2d/hydro/inflation

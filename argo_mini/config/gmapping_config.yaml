@@ -6,4 +6,4 @@ maxUrange: 10.0 # Maksymalny zasięg czujnika laserowego
 sigma: 0.05 # Odchylenie standardowe związane z obserwacjami
 
 base_frame: "base_footprint" # Ramka robota
-odom_frame: "base_footprint" # Ramka odometrii
+odom_frame: "odom" # Ramka odometrii

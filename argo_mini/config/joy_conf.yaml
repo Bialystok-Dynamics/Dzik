@@ -1,26 +1,4 @@
 teleop:
-  # pb wired
-#    planar:
-#      type: topic
-#      message_type: geometry_msgs/Twist
-#      topic_name: cmd_vel
-#      deadman_buttons: [5]
-#      axis_mappings:
-#        -
-#          target: linear.x
-#          axis: 1
-#          scale: 1.0
-#          offset: 0
-#        -
-#          target: linear.y
-#          axis: 0
-#          scale: 1.0
-#          offset: 0
-#        -
-#          target: angular.z
-#          axis: 3
-#          scale: 1.0
-#          offset: 0
 #  # white bluetooth
   planar:
     type: topic
@@ -72,7 +50,7 @@ teleop:
 #    type: topic
 #    message_type: geometry_msgs/Twist
 #    topic_name: cmd_vel
-#    deadman_buttons: [5]
+#    deadman_buttons: [7]
 #    axis_mappings:
 #      -
 #        target: linear.x
