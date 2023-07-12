@@ -16,7 +16,7 @@ def talker():
     point1.point.y = 2.0
     point1.point.z = 3.0
 
-    # Punkt 2,3,4,5 itd.
+    # Punkt 2
     point2 = PointStamped()
     point2.header.stamp = rospy.Time.now()
     point2.header.frame_id = "/map"  # Zmień na swoją ramkę odniesienia
