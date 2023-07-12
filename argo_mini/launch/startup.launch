@@ -47,5 +47,6 @@
         </include>
 
         <include file="$(find argo_mini)/launch/joy_steering.launch"/>
+        <include file="$(find argo_mini)/launch/laser_odom.launch"/>
     </group>
 </launch>

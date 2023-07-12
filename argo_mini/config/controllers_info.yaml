@@ -43,7 +43,7 @@ argo_mini:
     rear_left_wheel_joint: rear_left_wheel
 
     base_frame_id: base_footprint
-    enable_odom_tf: true
+    enable_odom_tf: false
 
     pose_covariance: [ 0.001, 0,    0,          0,          0,          0,
                        0,     0.001,0,          0,          0,          0,
