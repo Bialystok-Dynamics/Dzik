@@ -6,7 +6,7 @@
 <!--param name = "recovery_behaviors" value = "conservative_reset"/-->
 
 <rosparam command = "load" file="$(find argo_mini)/config/move_base_conf.yaml"/>
-<rosparam command = "load" file="$(find argo_mini)/config/local_costmap_conf.yaml"/>
+<rosparam command = "load" file="$(find argo_mini)/config/global_costmap_conf.yaml"/>
 <rosparam command = "load" file="$(find argo_mini)/config/local_costmap_conf.yaml"/>
 <rosparam command = "load" file="$(find argo_mini)/config/base_global_planner_conf.yaml"/>
 <rosparam command = "load" file="$(find argo_mini)/config/base_local_planner_conf.yaml"/>
