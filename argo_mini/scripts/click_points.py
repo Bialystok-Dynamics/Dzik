@@ -24,11 +24,10 @@ def talker():
     points = [point1]  # Dodaj więcej punktów do listy
 
     for point in points:
-        # while not rospy.is_shutdown():
-            rospy.loginfo("Publishing point at (%f, %f, %f)", point.point.x, point.point.y, point.point.z)
-            pub.publish(point)
-            time.sleep(1)  # Opóźnienie między wysyłaniem punktów
-            rate.sleep()
+        rospy.loginfo("Publishing point at (%f, %f, %f)", point.point.x, point.point.y, point.point.z)
+        pub.publish(point)
+        time.sleep(1)  # Opóźnienie między wysyłaniem punktów
+        rate.sleep()
 
 
 if __name__ == '__main__':
