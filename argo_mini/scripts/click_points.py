@@ -2,7 +2,6 @@
 
 import rospy
 from geometry_msgs.msg import PointStamped
-import time
 
 
 def talker():
@@ -18,16 +17,21 @@ def talker():
     point1.point.z = 3.0
 
     # Punkt 2,3,4,5 itd.
-    # point2 = PointStamped()
-    # ...
+    point2 = PointStamped()
+    point2.header.stamp = rospy.Time.now()
+    point2.header.frame_id = "/map"  # Zmień na swoją ramkę odniesienia
+    point2.point.x = 2.0
+    point2.point.y = 3.0
+    point2.point.z = 4.0
 
-    points = [point1]  # Dodaj więcej punktów do listy
+    # Punkt 3,4,5 itd.
+
+    points = [point1, point2]  # Dodaj więcej punktów do listy
 
     for point in points:
         rospy.loginfo("Publishing point at (%f, %f, %f)", point.point.x, point.point.y, point.point.z)
         pub.publish(point)
-        time.sleep(1)  # Opóźnienie między wysyłaniem punktów
-        rate.sleep()
+        rate.sleep()  # Opóźnienie między wysyłaniem punktów
 
 
 if __name__ == '__main__':
