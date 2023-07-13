@@ -93,7 +93,7 @@ def node():
 				nb.append(i)
 			else:
 				na.append(i)	
-		rospy.loginfo("available robots: "+str(na))	
+		rospy.logdebug("available robots: "+str(na))
 #------------------------------------------------------------------------- 
 #get dicount and update informationGain
 		for i in nb+na:
@@ -136,15 +136,15 @@ def node():
 					centroid_record.append(centroids[ip])
 					id_record.append(ir)
 		
-		rospy.loginfo("revenue record: "+str(revenue_record))	
-		rospy.loginfo("centroid record: "+str(centroid_record))	
-		rospy.loginfo("robot IDs record: "+str(id_record))	
+		rospy.logdebug("revenue record: "+str(revenue_record))
+		rospy.logdebug("centroid record: "+str(centroid_record))
+		rospy.logdebug("robot IDs record: "+str(id_record))
 		
 #-------------------------------------------------------------------------	
 		if (len(id_record)>0):
 			winner_id=revenue_record.index(max(revenue_record))
 			robots[id_record[winner_id]].sendGoal(centroid_record[winner_id])
-			rospy.loginfo(namespace+str(namespace_init_count+id_record[winner_id])+"  assigned to  "+str(centroid_record[winner_id]))	
+			rospy.logdebug(namespace+str(namespace_init_count+id_record[winner_id])+"  assigned to  "+str(centroid_record[winner_id]))
 			rospy.sleep(delay_after_assignement)
 #------------------------------------------------------------------------- 
 		rate.sleep()

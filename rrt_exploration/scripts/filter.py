@@ -227,7 +227,7 @@ def node():
         for i in centroids:
             tempPoint.x = i[0]
             tempPoint.y = i[1]
-            rospy.loginfo("arraypoints: %d %d",tempPoint.x,tempPoint.y ) 
+            rospy.logdebug("arraypoints: %d %d",tempPoint.x,tempPoint.y )
             arraypoints.points.append(copy(tempPoint))
         filterpub.publish(arraypoints)
         pp = []

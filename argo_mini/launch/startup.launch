@@ -63,7 +63,7 @@
             <include file="$(find argo_mini)/launch/amcl.launch" if="$(arg amcl)"/>
             <include file="$(find argo_mini)/launch/navigation.launch" if="$(arg nav)"/>
             <include file="$(find rrt_exploration)/launch/simple.launch" if="$(arg rrt)"/>
-            <node pkg="argo_mini" name="ctrl_c_gazebo" type="ctrl_c_gazebo.py" respawn="false" output="screen"/>
+<!--             <node pkg="argo_mini" name="ctrl_c_gazebo" type="ctrl_c_gazebo.py" respawn="false" output="screen"/> -->
         </group>
         
 
