@@ -2,6 +2,7 @@
     <arg name="ns" default="argo_mini"/>
     <arg name="world" default="pb"/>
     <arg name="paused" default="false"/>
+    <arg name="gazebo_gui" default="false"/>
 
     <include file="$(find gazebo_ros)/launch/empty_world.launch">
         <arg name="world_name" value="$(find argo_mini)/worlds/test_easy.world" if="$(eval world=='map01')"/>
@@ -11,7 +12,7 @@
 
         <arg name="paused" default="$(arg paused)"/>
         <arg name="use_sim_time" default="true"/>
-        <arg name="gui" default="true"/>
+        <arg name="gui" default="$(arg gazebo_gui)"/>
         <arg name="headless" default="false"/>
         <arg name="debug" default="false"/>
         <arg name="verbose" default="true"/>

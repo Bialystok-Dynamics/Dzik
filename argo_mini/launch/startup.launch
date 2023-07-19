@@ -1,6 +1,7 @@
 <launch>
     <arg name="simulation" default="true"/>
     <arg name="rviz" default="true"/>
+    <arg name="gazebo_gui" default="false"/>
     <arg name="world" default="pb"/> <!-- warehouse map01 pb -->
     <arg name="mapping" default="false"/>
     <arg name="amcl" default="false"/> <!-- use with map01 or pb map -->
@@ -16,7 +17,8 @@
     </node>
 
     <include file="$(find argo_mini)/launch/gazebo.launch" if="$(arg simulation)">
-        <arg name="world" default="pb"/>
+        <arg name="world" default="$(arg world)"/>
+        <arg name="gazebo_gui" default="$(arg gazebo_gui)"/>
     </include>
 
     <group ns="argo_mini">

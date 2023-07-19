@@ -24,6 +24,7 @@
   <exec_depend>amcl</exec_depend>
   <exec_depend>move_base</exec_depend>
   <exec_depend>dwa_local_planner</exec_depend>
+  <exec_depend>laser_scan_matcher</exec_depend>
 
   <export>
 
