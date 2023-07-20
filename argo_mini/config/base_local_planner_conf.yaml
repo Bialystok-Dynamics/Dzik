@@ -2,7 +2,7 @@ DWAPlannerROS:
 
   # Robot Configuration Parameters
   max_vel_x: 0.18   # Maksymalna prędkość poruszania się robota w osi X w [m/s]  (wartość domyślna 0.55)
-  min_vel_x: 0.08  # Minimalna prędkość poruszania się robota w osi X w [m/s]  (w.d. 0.0)
+  min_vel_x: 0.05  # Minimalna prędkość poruszania się robota w osi X w [m/s]  (w.d. 0.0)
 
   max_vel_y: 0.0  # Maksymalna prędkość poruszania się robota w osi Y w [m/s] (w.d. 0.1)
   min_vel_y: 0.0  # Minimalna prędkość poruszania się robota w osi Y w [m/s]  (w.d. -0.1)
@@ -14,24 +14,29 @@ DWAPlannerROS:
   max_vel_theta: 1.0 # Maksymalna bezwzględna prędkość kątowa robota w [rad/s] (w.d. 1.0)
   min_vel_theta: -1.0 # Minimalna bezwzględna prędkość kątowa robota w [rad/s]  (w.d. 0.4)
 
-  acc_lim_x: 1.0  # Maksymalna wartość przyśpieszenia robota w osi X w [m/s^2] (w.d. 2.5)
-  acc_lim_y: 0.0  # Maksymalna wartość przyśpieszenia robota w osi Y w [m/s^2]  (w.d. 2.5)
+  acc_lim_x: 0.05  # Maksymalna wartość przyśpieszenia robota w osi X w [m/s^2] (w.d. 2.5)
+  acc_lim_y: 0.2  # Maksymalna wartość przyśpieszenia robota w osi Y w [m/s^2]  (w.d. 2.5)
   acc_lim_theta: 0.6 # Maksymalna wartość przyśpieszenia kątowego robota w [rad/s^2]  (w.d. 3.2)
 
   # Goal Tolerance Parametes
-  xy_goal_tolerance: 0.10 # Wartość dopuszczalnego błędu odlegości w przypadku dotarcia do celu w osi X oraz w osi Y w metrach  (w.d. 0.1)
+  xy_goal_tolerance: 0.30 # Wartość dopuszczalnego błędu odlegości w przypadku dotarcia do celu w osi X oraz w osi Y w metrach  (w.d. 0.1)
   yaw_goal_tolerance: 0.05 # Wartość dopuszczalnego błędu orientacji w przypadku dotarcia do celu w radianach (w.d. 0.05)
   latch_xy_goal_tolerance: false  # W przypadku ustawienia tej wartości na true gdy robot dotrze do celu zacznie obracać się w miejscu,
   # nawet jeżeli spowoduje to oddalenie się od celu o dopuszczalne wartości (w.d. false)
+
+  # meter_scoring: true
+  # recovery_behavior_enabled: false
+  # clearing_rotation_allowed: false
+
 
   # Forward Simulation Parameters
   sim_time: 0.8 # Wartość czasu do symulowania trajektorii robota do przodu w sekundach (w.d. 1.7)
   sim_granularity: 0.05
   vx_samples: 18  # Liczba próbek wykorzystywana podczas badania przestrzeni prędkości w osi X (w.d. 3)
-  vy_samples: 0   # Liczba próbek wykorzystywana podczas badania przestrzeni prędkości w osi Y (w.d. 0)
+  vy_samples: 10   # Liczba próbek wykorzystywana podczas badania przestrzeni prędkości w osi Y (w.d. 0)
   vth_samples: 40 # Liczba próbek wykorzystywana podczas badania przestrzeni prędkości kątowej (w.d. 20)
   vtheta_samples: 20
-  controller_frequency: 10.0 # Częstotliwość odświeżania sterownika DWAPlannerROS w Hz (w.d. 20)
+  controller_frequency: 20.0 # Częstotliwość odświeżania sterownika DWAPlannerROS w Hz (w.d. 20)
   # W przypadku użyciu z move_base można jeSdynie ustawić ten parametr w tamtym miejscu, a w tym pozostawić nieustawiony
 
   # Trajectory Scoring Parameters

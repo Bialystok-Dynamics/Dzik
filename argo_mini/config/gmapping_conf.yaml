@@ -1,7 +1,7 @@
 # plik konfiguracyjny gmapping dla RP lidar a3
 
 # Ustawienia ogólne
-map_update_interval: 1.0 # Częstotliwość aktualizacji mapy (im mniejsza liczba tym czciej) (zbyt czste odwierzanie obciaza obliczanie)
+map_update_interval: 10.0 # Częstotliwość aktualizacji mapy (im mniejsza liczba tym czciej) (zbyt czste odwierzanie obciaza obliczanie)
 
 maxUrange: 10.0 # Maksymalny zasięg czujnika laserowego 
 sigma: 0.05 # Odchylenie standardowe związane z obserwacjami(?)

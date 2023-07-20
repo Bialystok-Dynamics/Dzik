@@ -1,6 +1,7 @@
 <launch>
     <arg name="simulation" default="true"/>
     <arg name="rviz" default="true"/>
+    <arg name="world" default="easy"/> <!-- warehouse easy pb -->
     <arg name="peripheral" default=""/>
     <arg name="drive" default="6w"/>
     <arg name="mapping" default="true"/>
@@ -8,18 +9,21 @@
     <arg name="nav" default="true"/>
     <arg name="rrt" default="true"/>
     <arg name="gui" default="false"/>
-    
+    <rosparam file="$(find argo_mini)/config/controllers_info.yaml"/>
+    <rosparam file="$(find argo_mini)/config/hardware.yaml" unless="$(arg simulation)"/>
 
-    <include file="$(find aws_robomaker_small_warehouse_world)/launch/magazyn_z_18_tagami.launch" if="$(arg simulation)">
+    <!-- <include file="$(find aws_robomaker_small_warehouse_world)/launch/magazyn_z_18_tagami.launch" if="$(arg simulation)">
         <arg name="gui" value="$(arg gui)"/>
-    </include>
+    </include> -->
 
     <node name="rviz" pkg="rviz" type="rviz" if="$(arg rviz)" args="-d $(find argo_mini)/rviz/rviz.rviz">
         <remap from="/move_base_simple/goal" to="/argo_mini/move_base_simple/goal"/>
     </node>
 
-    <rosparam file="$(find argo_mini)/config/controllers_info.yaml"/>
-    <rosparam file="$(find argo_mini)/config/hardware.yaml" unless="$(arg simulation)"/>
+    <include file="$(find argo_mini)/launch/gazebo.launch" if="$(arg simulation)">
+        <arg name="world" default="easy"/>
+    </include>
+
 
     <group ns="argo_mini">
         <arg name="_drive" value="argo_mini_urdf_6w_drive" if="$(eval drive=='6w')"/>
@@ -50,8 +54,6 @@
 
         <group if="$(arg simulation)">
 
-            <node name="spawn_model" pkg="gazebo_ros" type="spawn_model"
-                  args="-param '/argo_mini/robot_description' -urdf -model argo_mini"/>
 
 <!--            <node pkg="laser_filters" type="scan_to_scan_filter_chain" name="laser_filter">-->
 <!--                <rosparam command="load" file="$(find argo_mini)/config/laser_filter_config.yaml"/>-->
@@ -60,7 +62,9 @@
 <!--            </node>-->
 
             <include file="$(find argo_mini)/launch/mapping.launch" if="$(arg mapping)"/>
-            <include file="$(find argo_mini)/launch/amcl.launch" if="$(arg amcl)"/>
+            <include file="$(find argo_mini)/launch/amcl.launch" if="$(arg amcl)">
+                <arg name="map" value="$(arg world)"/>
+            </include>
             <include file="$(find argo_mini)/launch/navigation.launch" if="$(arg nav)"/>
             <include file="$(find rrt_exploration)/launch/simple.launch" if="$(arg rrt)"/>
 <!--             <node pkg="argo_mini" name="ctrl_c_gazebo" type="ctrl_c_gazebo.py" respawn="false" output="screen"/> -->
