@@ -200,9 +200,9 @@ Symulacja powinna się uruchomić, mogą się pojawiać jakieś błędy w konsol
 ---
 
 # Historia aktualizacji
-**1.0.0**
-**1.0.1** poprawione niektóre komendy, dodana wskazówka co do lepszego terminala
-**1.0.2** przeniesienie na MD
+- **1.0.0**
+- **1.0.1** poprawione niektóre komendy, dodana wskazówka co do lepszego terminala
+- **1.0.2** przeniesienie na MD
 
 ---
 
