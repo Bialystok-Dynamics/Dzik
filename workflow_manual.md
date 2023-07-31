@@ -2,7 +2,7 @@
 
 ## Dodawanie nowej funkcji / Wprowadzanie nowych usprawnień
 
-> **Important**
+> [!IMPORTANT]
 > Upewnij się, czy zadanie dotyczące Twoich działań znajduje się w `Backlog` lub `Todo`.
 > Jeżeli tak, to przejdź od razu do następnego kroku, jeżeli nie, to wykonaj następujący:
 >
@@ -14,3 +14,13 @@
 5. Po zakończeniu swojej pracy pozytywnym dodaniem nowej funkcji/usprawnienia możesz wykonać merge branchy tworząc `Pull request`.
 6. Poczekaj, aż ktoś sprawdzi i zaakceptuje Twoje zmiany. Po zaakceptowaniu pull requesta zadanie powinno automatycznie zostać przeniesione do kolumny `Done`, a issue zamknięte.
 7. Gratulacje! Dodałeś nowe usprawnienie!
+
+---
+
+## Zgłaszanie bug'a
+1. Otwórz zakładkę `Issues` w repozytorium, którego dotyczy błąd.
+2. Kliknij przycisk `New issue`.
+3. Kliknij przycisk `Get started` przy `Bug report`.
+4. Wypełnij formularz kolejno uzupełniając tytuł, który w skórcie określi problem, następnie szczegółowo opisz problem. Przedstaw kroki, by odtworzyć błąd. Dodaj opis przedstawiający oczekiwany efekt działania danej funkcji.
+   > [!NOTE]
+   > Dodaj zrzuty ekranu jeśli to konieczne.
