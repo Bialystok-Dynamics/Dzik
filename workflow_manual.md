@@ -7,7 +7,7 @@
 > Jeżeli tak, to przejdź od razu do następnego kroku, jeżeli nie, to wykonaj następujący:
 >
 > 0. Stwórz zadanie w kolumnie `Todo` dotyczące tworzonego usprawnienia.
-1. Przypisz zadanie do siebie poprzez wybranie siebie w liście `Assignees` w zadaniu.
+1. Przypisz zadanie poprzez wybranie siebie z listy `Assignees` w zadaniu.
 2. Przekonwertuj je na issue poprzez kliknięcie przycisku `Convert to issue` w zadaniu. Pamiętaj o przeniesieniu zadania do kolumny `In progress`.
 3. Stwórz branch do swojej pracy poprzez kliknięcie przycisku `Create a branch` w issue.
 4. Wprowadź wymagane zmiany commitując wszystko na bieżąco.
@@ -25,6 +25,7 @@
  
    > [!NOTE]
    > Dodaj zrzuty ekranu jeśli to konieczne.
+
 5. Prześlij zgłoszenie klikając przycisk `Submit new issue`.
 6. Dziękujemy za przesłanie zgłoszenia.
 
