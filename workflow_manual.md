@@ -38,3 +38,8 @@
 4. Wypełnij formularz uzupełniając tytuł i odpowiadając na pytania.
 5. Prześlij sugestię klikając przycisk `Submit new issue`.
 6. Dziękujemy za przesłanie sugestii.
+
+---
+
+## Historia aktualizacji
+- **v1.0.0**: Utworzenie instrukcji
