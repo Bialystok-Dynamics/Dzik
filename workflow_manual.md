@@ -53,3 +53,4 @@
 
 ## Historia aktualizacji
 - **v1.0.0**: Utworzenie instrukcji
+- **v1.0.1**: Dodano punkty o sprawdzeniu poprawności działania kodu i sprawdzeniu aktualności brancha
