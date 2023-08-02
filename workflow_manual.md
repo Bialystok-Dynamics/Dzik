@@ -11,9 +11,19 @@
 2. Przekonwertuj je na issue poprzez kliknięcie przycisku `Convert to issue` w zadaniu. Pamiętaj o przeniesieniu zadania do kolumny `In progress`.
 3. Stwórz branch do swojej pracy poprzez kliknięcie przycisku `Create a branch` w issue.
 4. Wprowadź wymagane zmiany commitując wszystko na bieżąco.
-5. Po zakończeniu swojej pracy pozytywnym dodaniem nowej funkcji/usprawnienia możesz wykonać merge branchy tworząc `Pull request`.
-6. Poczekaj, aż ktoś sprawdzi i zaakceptuje Twoje zmiany. Po zaakceptowaniu pull requesta zadanie powinno automatycznie zostać przeniesione do kolumny `Done`, a issue zamknięte.
-7. Gratulacje! Dodałeś nowe usprawnienie!
+5. Upewnij się, że Twój branch jest aktualny względem brancha na podstawie którego został stworzony.
+   
+   > [!WARNING]
+   > Jeżeli Twój branch nie będzie aktualny nie będziesz miał możliwości stworzenia pull requesta.
+   
+7. Sprawdź, czy wszystko działa poprawnie. Jeżeli tak, przejdź do następnego kroku. Jeżeli nie, najpierw napraw błędy.
+8. Stwórz pull request.
+9. Poproś kogoś o sprawdzenie Twoich zmian, następnie poczekaj na ich ocenę.
+   
+   > [!NOTE]
+   > Po zaakceptowaniu pull requesta należy wykonać merge. W tym momencie zadanie powinno automatycznie zostać przeniesione do kolumny `Done`, a issue zamknięte.
+
+10. Gratulacje! Dodałeś nowe usprawnienie!
 
 ---
 
