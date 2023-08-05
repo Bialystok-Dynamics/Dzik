@@ -9,7 +9,10 @@
 <rosparam command = "load" file="$(find argo_mini)/config/global_costmap_conf.yaml"/>
 <rosparam command = "load" file="$(find argo_mini)/config/local_costmap_conf.yaml"/>
 <rosparam command = "load" file="$(find argo_mini)/config/base_global_planner_conf.yaml"/>
-<!-- <rosparam command = "load" file="$(find argo_mini)/config/base_local_planner_conf.yaml"/> -->
+<rosparam command = "load" file="$(find argo_mini)/config/base_local_planner.yaml"/>
+<!-- <rosparam command = "load" file="$(find argo_mini)/config/dwa_local_planner_params.yaml"/> -->
+
+
 <!--rosparam command = "load" file="$(find argo_mini)/config/"/>
 <rosparam command = "load" file="$(find argo_mini)/config/"/-->
 </node>

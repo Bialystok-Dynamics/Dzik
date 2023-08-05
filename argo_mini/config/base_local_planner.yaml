@@ -1,0 +1,27 @@
+ # Robot Configuration Parameters
+  max_vel_x: 0.18   # Maksymalna prędkość poruszania się robota w osi X w [m/s]  (wartość domyślna 0.55)
+  min_vel_x: 0.05  # Minimalna prędkość poruszania się robota w osi X w [m/s]  (w.d. 0.0)
+
+  max_vel_y: 0.0  # Maksymalna prędkość poruszania się robota w osi Y w [m/s] (w.d. 0.1)
+  min_vel_y: 0.0  # Minimalna prędkość poruszania się robota w osi Y w [m/s]  (w.d. -0.1)
+
+  # The velocity when robot is moving in a straight line
+  max_vel_trans:  0.22  # Maksymalna bezwględna prędkość poruszania się robota w przypadku poruszania się po linii prostej w [m/s] (w.d. 0.55)
+  min_vel_trans:  0.11  # Minimalna bezwzględna prędkość poruszania się robota w przypadku poruszania się po linii prostej w [m/s]  (w.d. 0.1)
+
+  max_vel_theta: 0.9 # Maksymalna bezwzględna prędkość kątowa robota w [rad/s] (w.d. 1.0)
+  min_vel_theta: -1.0 # Minimalna bezwzględna prędkość kątowa robota w [rad/s]  (w.d. 0.4)
+
+  acc_lim_x: 0.05  # Maksymalna wartość przyśpieszenia robota w osi X w [m/s^2] (w.d. 2.5)
+  acc_lim_y: 0.2  # Maksymalna wartość przyśpieszenia robota w osi Y w [m/s^2]  (w.d. 2.5)
+  #acc_lim_theta: 2.0 # Maksymalna wartość przyśpieszenia kątowego robota w [rad/s^2]  (w.d. 3.2)
+
+  xy_goal_tolerance:  0.30
+
+  clearing_rotation_allowed: false
+  recovery_behavior_enabled: false
+  meter_scoring: true
+  yaw_goal_tolerance: 2.0
+  holonomic_robot: true
+
+  min_in_place_vel_theta: 0.7

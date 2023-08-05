@@ -1,7 +1,7 @@
 <launch>
     <arg name="simulation" default="true"/>
     <arg name="rviz" default="true"/>
-    <arg name="world" default="easy"/> <!-- warehouse easy pb -->
+    <arg name="world" default="easy"/> <!-- warehouse easy pb room office-->
     <arg name="peripheral" default=""/>
     <arg name="drive" default="6w"/>
     <arg name="mapping" default="true"/>
@@ -21,7 +21,6 @@
     </node>
 
     <include file="$(find argo_mini)/launch/gazebo.launch" if="$(arg simulation)">
-        <arg name="world" default="easy"/>
     </include>
 
 
@@ -66,7 +65,7 @@
                 <arg name="map" value="$(arg world)"/>
             </include>
             <include file="$(find argo_mini)/launch/navigation.launch" if="$(arg nav)"/>
-            <include file="$(find rrt_exploration)/launch/simple.launch" if="$(arg rrt)"/>
+            <include file="$(find rrt_exploration)/launch/single.launch" if="$(arg rrt)"/>
 <!--             <node pkg="argo_mini" name="ctrl_c_gazebo" type="ctrl_c_gazebo.py" respawn="false" output="screen"/> -->
         </group>
         
