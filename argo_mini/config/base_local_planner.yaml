@@ -19,7 +19,7 @@
   xy_goal_tolerance:  0.30
 
   clearing_rotation_allowed: false
-  recovery_behavior_enabled: false
+  recovery_behavior_enabled: true
   meter_scoring: true
   yaw_goal_tolerance: 2.0
   holonomic_robot: true
