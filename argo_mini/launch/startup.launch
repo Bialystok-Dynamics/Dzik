@@ -1,7 +1,7 @@
 <launch>
     <arg name="simulation" default="true"/>
     <arg name="rviz" default="true"/>
-    <arg name="world" default="easy"/> <!-- warehouse easy pb room office-->
+    <arg name="world" default="warehouse"/> <!-- warehouse easy pb room office-->
     <arg name="peripheral" default=""/>
     <arg name="drive" default="6w"/>
     <arg name="mapping" default="true"/>

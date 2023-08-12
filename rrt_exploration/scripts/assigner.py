@@ -53,8 +53,8 @@ def node():
 	
 	rate = rospy.Rate(rateHz)
 #-------------------------------------------
-	rospy.Subscriber(map_topic, OccupancyGrid, mapCallBack)
-	rospy.Subscriber(frontiers_topic, PointArray, callBack)
+	jol = rospy.Subscriber(map_topic, OccupancyGrid, mapCallBack)
+	elo = rospy.Subscriber(frontiers_topic, PointArray, callBack)
 #---------------------------------------------------------------------------------------------------------------
 		
 # wait if no frontier is received yet 
@@ -155,7 +155,5 @@ if __name__ == '__main__':
         node()
     except rospy.ROSInterruptException:
         pass
- 
- 
  
  

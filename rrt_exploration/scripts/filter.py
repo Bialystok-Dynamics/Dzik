@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 #rozwiazano zmieniajac funkcje informationGain z functions.py nie otrzymujemy centroids filtered_points pusto, frontiers git!!!
-
+# centroids czasem potrzebuja chwili ale to moze m,oj komp
 # --------Include modules---------------
 from copy import copy
 import rospy
@@ -214,12 +214,12 @@ def node():
                 x = array([transformedPoint.point.x, transformedPoint.point.y])
                 cond = (gridValue(globalmaps[i], x) > threshold) or cond
                 # w funcions.py jest funkcja do tego i tam wartosc wieksza od r nie inkrementuja gaina(zmieniona i poprawiona juz dziala)
-                
+                # print(informationGain(mapData, [centroids[z][0], centroids[z][1]], info_radius*0.5))
 
             if (cond or (informationGain(mapData, [centroids[z][0], centroids[z][1]], info_radius*0.5)) < 0.2):
-                # print(gridValue(globalmaps[i], x))
+                #rospy.loginfo(str(centroids[z][0]) +" "+ str(centroids[z][1]))
                 centroids = delete(centroids, (z), axis=0)
-                z = z-1               
+                z = z-1
             z += 1
 # -------------------------------------------------------------------------
 # publishing
@@ -229,22 +229,22 @@ def node():
             tempPoint.y = i[1]
             rospy.logdebug("arraypoints: %d %d",tempPoint.x,tempPoint.y )
             arraypoints.points.append(copy(tempPoint))
-            filterpub.publish(arraypoints)
-            pp = []
+        filterpub.publish(arraypoints)
+        pp = []
         for q in range(0, len(frontiers)):
             p.x = frontiers[q][0]
             p.y = frontiers[q][1]
             pp.append(copy(p))
-            points.points = pp
-            pp = []
+        points.points = pp
+        pp = []
         for q in range(0, len(centroids)):
             p.x = centroids[q][0]
             p.y = centroids[q][1]
             pp.append(copy(p))
-            points_clust.points = pp
-            # rospy.loginfo("pp:" + str(points_clust)) 
-            pub.publish(points)
-            pub2.publish(points_clust)
+        points_clust.points = pp
+        # rospy.loginfo("pp:" + str(points_clust)) 
+        pub.publish(points)
+        pub2.publish(points_clust)
         rate.sleep()
 # -------------------------------------------------------------------------
 

@@ -1,13 +1,13 @@
 <launch>
     <arg name="ns" default="argo_mini"/>
-    <arg name="world" default="easy"/>
+    <arg name="world" default="warehouse"/>
     <arg name="paused" default="false"/>
 
     <include file="$(find gazebo_ros)/launch/empty_world.launch">
         <arg name="world_name" value="$(find argo_mini)/worlds/easy.world" if="$(eval world=='easy')"/>
         <arg name="world_name" value="$(find argo_mini)/worlds/pb.world" if="$(eval world=='pb')"/>
         <arg name="world_name" value="$(find argo_mini)/worlds/office_small.world" if="$(eval world=='room')"/>
-        <arg name="world_name" value="$(find argo_mini)/worlds/pokoj4.world" if="$(eval world=='house')"/>
+        <arg name="world_name" value="$(find argo_mini)/worlds/pokoj3.world" if="$(eval world=='house')"/>
         <arg name="world_name" value="$(find aws_robomaker_small_warehouse_world)/worlds/magazyn_z_18_tagami.world"
              if="$(eval world=='warehouse')"/>
 
