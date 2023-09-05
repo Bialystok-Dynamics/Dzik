@@ -24,4 +24,6 @@ inflater_layer:
 
 footprint_padding: 0.03
 
-ethal_cost_threshold: 100
+resolution: 0.01
+
+# lethal_cost_threshold: 100

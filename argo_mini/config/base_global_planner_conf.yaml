@@ -1,2 +1,9 @@
-allow_unknown: false
-outline_map: true 
+base_local_planner: base_local_planner/TrajectoryPlannerROS
+
+TrajectoryPlannerROS:
+  allow_unknown: true
+  outline_map: true
+  cost_factor: 0.1
+  default_tolerance: 3.
+  lethal_cost: 253
+  neutral_cost: 200

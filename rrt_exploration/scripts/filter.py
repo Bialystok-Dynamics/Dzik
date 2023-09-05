@@ -28,6 +28,8 @@ def callBack(data, args):
     if len(frontiers) > 0:
         frontiers = vstack((frontiers, x))
     else:
+
+
         frontiers = x
 
 
@@ -55,7 +57,7 @@ def node():
 
     # fetching all parameters
     map_topic = rospy.get_param('~map_topic', '/argo_mini/map')
-    threshold = rospy.get_param('~costmap_clearing_threshold', 70)
+    threshold = rospy.get_param('~costmap_clearing_threshold', 0)
     # this can be smaller than the laser scanner range, >> smaller >>less computation time>> too small is not good, info gain won't be accurate
     info_radius = rospy.get_param('~info_radius', 1.0)
     goals_topic = rospy.get_param('~goals_topic', '/detected_points')
@@ -216,7 +218,7 @@ def node():
                 # w funcions.py jest funkcja do tego i tam wartosc wieksza od r nie inkrementuja gaina(zmieniona i poprawiona juz dziala)
                 # print(informationGain(mapData, [centroids[z][0], centroids[z][1]], info_radius*0.5))
 
-            if (cond or (informationGain(mapData, [centroids[z][0], centroids[z][1]], info_radius*0.5)) < 0.2):
+            if (cond or (informationGain(mapData, [centroids[z][0], centroids[z][1]], info_radius*0.5)) < 0.4):
                 #rospy.loginfo(str(centroids[z][0]) +" "+ str(centroids[z][1]))
                 centroids = delete(centroids, (z), axis=0)
                 z = z-1

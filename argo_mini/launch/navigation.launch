@@ -1,16 +1,19 @@
 <launch>
 	<arg name="machine" default=""/> <!-- Argument w nodach "machine" znaczy tyle że ma się uruchomić na innym urządzeniu a nie komputerze gdzie uruchamiasz Jeśli jest pusty to tyle że odpali się na kompie-->
     <node name = "move_base" pkg = "move_base" type = "move_base" output = "screen" machine="$(arg machine)">
-<param name = "base_global_planner" value = "navfn/NavfnROS"/>
+<param name = "base_global_planner" value = "navfn/NavfnROS"/> 
+    <!-- <param name = "base_global_planner" value = "carrot_planner/CarrotPlanner"/> -->
 <param name = "base_local_planner" value = "dwa_local_planner/DWAPlannerROS"/>
 <!--param name = "recovery_behaviors" value = "conservative_reset"/-->
 
 <rosparam command = "load" file="$(find argo_mini)/config/move_base_conf.yaml"/>
+<rosparam file="$(find argo_mini)/config/costmap_common_params.yaml" command="load" ns="global_costmap" />
+<rosparam file="$(find argo_mini)/config/costmap_common_params.yaml" command="load" ns="local_costmap" />
 <rosparam command = "load" file="$(find argo_mini)/config/global_costmap_conf.yaml"/>
 <rosparam command = "load" file="$(find argo_mini)/config/local_costmap_conf.yaml"/>
 <rosparam command = "load" file="$(find argo_mini)/config/base_global_planner_conf.yaml"/>
 <rosparam command = "load" file="$(find argo_mini)/config/base_local_planner.yaml"/>
-<!-- <rosparam command = "load" file="$(find argo_mini)/config/dwa_local_planner_params.yaml"/> -->
+<rosparam command = "load" file="$(find argo_mini)/config/dwa_local_planner_params.yaml"/>
 
 
 <!--rosparam command = "load" file="$(find argo_mini)/config/"/>
