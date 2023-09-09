@@ -16,7 +16,7 @@
   acc_lim_y: 0.2  # Maksymalna wartość przyśpieszenia robota w osi Y w [m/s^2]  (w.d. 2.5)
   #acc_lim_theta: 2.0 # Maksymalna wartość przyśpieszenia kątowego robota w [rad/s^2]  (w.d. 3.2)
 
-  xy_goal_tolerance:  0.30
+  xy_goal_tolerance:  0.50
   yaw_goal_tolerance: 3.14
 
   clearing_rotation_allowed: false

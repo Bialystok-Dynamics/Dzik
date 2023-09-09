@@ -21,8 +21,10 @@ class robot:
         self.name = name
         self.global_frame = rospy.get_param('~global_frame', '/argo_mini/map')
         self.robot_frame = rospy.get_param('~robot_frame', 'base_link')
+        # self.plan_service = rospy.get_param(
+        #     '~plan_service', '/argo_mini/move_base/GlobalPlanner/make_plan') 
         self.plan_service = rospy.get_param(
-            '~plan_service', '/argo_mini/move_base/NavfnROS/make_plan') 
+            '~plan_service', '/argo_mini/move_base/Navfn/make_plan') 
         self.listener = tf.TransformListener()
         self.listener.waitForTransform(
             self.global_frame, self.name+'/'+self.robot_frame, rospy.Time(0), rospy.Duration(10.0))
@@ -209,10 +211,7 @@ def Nearest(V, x):
         if (n1 < n):
             n = n1
             result = i
-    return result
-
-# ________________________________________________________________________________
-
+    return result 
 
 def Nearest2(V, x):
     n = inf

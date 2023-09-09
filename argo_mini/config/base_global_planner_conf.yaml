@@ -3,7 +3,9 @@ base_local_planner: base_local_planner/TrajectoryPlannerROS
 TrajectoryPlannerROS:
   allow_unknown: true
   outline_map: true
-  cost_factor: 0.1
-  default_tolerance: 3.
+  default_tolerance: 5.
   lethal_cost: 253
-  neutral_cost: 200
+  neutral_cost: 66
+  cost_factor: 0.55
+  use_dijkstra: true
+  yaw_goal_tolerance: 3.14

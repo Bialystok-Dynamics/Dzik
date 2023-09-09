@@ -65,7 +65,6 @@ def node():
 	while (len(mapData.data)<1):
 		pass
 
-	
 	robots=[]
 	if len(namespace)>0:
 		for i in range(0,n_robots):
