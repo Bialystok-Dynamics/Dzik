@@ -331,7 +331,7 @@ Visualization Manager:
       Marker Topic: /argo_mini/centroids
       Name: Marker
       Namespaces:
-        markers3: true
+        {}
       Queue Size: 100
       Value: true
     - Class: rviz/Marker
@@ -412,7 +412,7 @@ Visualization Manager:
       Marker Topic: /argo_mini/global_detector_shapes
       Name: Marker
       Namespaces:
-        markers: true
+        {}
       Queue Size: 100
       Value: true
     - Class: rviz/Marker

@@ -5,7 +5,7 @@ TrajectoryPlannerROS:
   outline_map: true
   default_tolerance: 5.
   lethal_cost: 253
-  neutral_cost: 66
-  cost_factor: 0.55
+  neutral_cost: 50
+  cost_factor: 0.8
   use_dijkstra: true
   yaw_goal_tolerance: 3.14

@@ -44,3 +44,6 @@ target_link_libraries(global_rrt_detector ${catkin_LIBRARIES})
 
 add_executable(local_rrt_detector src/local_rrt_detector.cpp src/functions.cpp src/mtrand.cpp)
 target_link_libraries(local_rrt_detector ${catkin_LIBRARIES})
+
+add_executable(bug src/bug.cpp src/functions.cpp)
+target_link_libraries(bug ${catkin_LIBRARIES})

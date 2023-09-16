@@ -140,7 +140,7 @@ if __name__ == '__main__':
         while not rospy.is_shutdown():
             rate.sleep()
             if (rospy.Time.now() - point_publisher.ros_vel_time).to_sec() > 10.0:
-                rospy.loginfo("STOI")
+                # rospy.loginfo("STOI")
                 point_publisher.timeout_flag = True
     except rospy.ROSInterruptException:
         pass
