@@ -19,7 +19,7 @@ DWAPlannerROS:
   acc_lim_theta: 1.0 # Maksymalna wartość przyśpieszenia kątowego robota w [rad/s^2]  (w.d. 3.2)
 
   # Goal Tolerance Parametes
-  xy_goal_tolerance: 0.15 # Wartość dopuszczalnego błędu odlegości w przypadku dotarcia do celu w osi X oraz w osi Y w metrach  (w.d. 0.1)
+  xy_goal_tolerance: 0.5 # Wartość dopuszczalnego błędu odlegości w przypadku dotarcia do celu w osi X oraz w osi Y w metrach  (w.d. 0.1)
   yaw_goal_tolerance: 3.14 # Wartość dopuszczalnego błędu orientacji w przypadku dotarcia do celu w radianach (w.d. 0.05)
   latch_xy_goal_tolerance: false  # W przypadku ustawienia tej wartości na true gdy robot dotrze do celu zacznie obracać się w miejscu,
   # nawet jeżeli spowoduje to oddalenie się od celu o dopuszczalne wartości (w.d. false)

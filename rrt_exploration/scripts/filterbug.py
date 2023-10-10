@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-#nie publikuje wszytskich znalezionych punktow :/
 
 # --------Include modules---------------
 from copy import copy
@@ -57,7 +56,7 @@ def node():
 
     # fetching all parameters
     map_topic = rospy.get_param('~map_topic', '/argo_mini/map')
-    threshold = rospy.get_param('~costmap_clearing_threshold', 40)
+    threshold = rospy.get_param('~costmap_clearing_threshold', 80)
     # this can be smaller than the laser scanner range, >> smaller >>less computation time>> too small is not good, info gain won't be accurate
     info_radius = rospy.get_param('~info_radius', 1.0)
     goals_topic = rospy.get_param('~goals_topic', '/detected_points')
@@ -192,7 +191,7 @@ def node():
         centroids = []
         front = copy(frontiers)
         if len(front) > 1:
-            ms = MeanShift(bandwidth=0.3)
+            ms = MeanShift(bandwidth=0.6)
             ms.fit(front)
             centroids = ms.cluster_centers_  # centroids array is the centers of each cluster
 
@@ -218,7 +217,8 @@ def node():
                 # w funcions.py jest funkcja do tego i tam wartosc wieksza od r nie inkrementuja gaina(zmieniona i poprawiona juz dziala)
                 # print(informationGain(mapData, [centroids[z][0], centroids[z][1]], info_radius*0.5))
 
-            if (cond or (informationGain(mapData, [centroids[z][0], centroids[z][1]], info_radius*0.5)) < 0.4):
+
+            if (cond or (informationGain(mapData, [centroids[z][0], centroids[z][1]], info_radius*0.5)) < 0.5):
                 # rospy.loginfo(str(centroids[z][0]) +" "+ str(centroids[z][1]))
                 centroids = delete(centroids, (z), axis=0)
                 z = z-1

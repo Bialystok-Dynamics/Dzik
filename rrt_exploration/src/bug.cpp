@@ -23,7 +23,7 @@ nav_msgs::OccupancyGrid mapData;
 geometry_msgs::PointStamped clickedpoint, start;
 geometry_msgs::PointStamped exploration_goal;
 visualization_msgs::Marker points;
-int height,width;
+int height,width, count = 0;
 float resolution,Xstartx,Xstarty,init_map_x,init_map_y, origin_position_x, origin_position_y;
 std::vector<std::vector<int>> occupancy_grid;
 std::vector<int8_t> occupancy_data;
@@ -44,7 +44,7 @@ void mapCallBack(const nav_msgs::OccupancyGrid::ConstPtr& msg)
 
     // Odczytaj rozdzielczość mapy (metry na piksel)
     resolution = msg->info.resolution;
-    // ROS_INFO("resolution, %d", resolution);
+    // ROS_INFO("resolution, %f", resolution);
     // Odczytaj dane o zajętości (0 - wolne, 100 - zajęte, -1 - nieznane)
     occupancy_data = msg->data;
     
@@ -101,9 +101,6 @@ int main(int argc, char** argv)
     ros::Publisher targetspub = nh.advertise<geometry_msgs::PointStamped>("/detected_points", 10);
     ros::Publisher pub = nh.advertise<visualization_msgs::Marker>(ns+"_shapes", 10);
 
-    // Inicjalizacja tf2
-    tf2_ros::Buffer tf_buffer;
-    tf2_ros::TransformListener tf_listener(tf_buffer);
 
     ros::Rate rate(2); 
 
@@ -198,13 +195,7 @@ pub.publish(points) ;
 
 std::vector<float> frontiers;
 
-// goal.header.stamp=ros::Time(0);
-// goal.header.frame_id=mapData.header.frame_id;
-// goal.point.x=Xstartx; //dla xy i x/y_pixel pojawiaja sie frontiers ale sa nie na mapie 
-// goal.point.y=Xstarty;
-// goal.point.z=0.0;
 
-// targetspub.publish(goal);
 // Main loop
 
 while (ros::ok()){
@@ -215,12 +206,18 @@ while (ros::ok()){
     {
         for (int j = 0; j < width; j++)
         {
+            int occupancy_value = occupancy_grid[i][j];
+
             occupancy_grid[i][j] = occupancy_data[i * width + j];
             float x = (i * resolution ) + origin_position_y; //- 17.7999
             float y = (j * resolution )+ origin_position_x; //- 21.0
-            int x_pixel = static_cast<int>(x);  // Przeliczenie na piksele
-            int y_pixel = static_cast<int>(y);
-            int occupancy_value = occupancy_grid[i][j];
+            // int x_pixel = static_cast<int>(x);  // Przeliczenie na piksele
+            // int y_pixel = static_cast<int>(y);
+            // float x_pixel = floor(x);
+            // float y_pixel = floor(y);
+            // float x_pixel = x;
+            // float y_pixel = y;
+            
             // ROS_INFO("i, %ld", x_pixel);
             // ROS_INFO("j, %ld", y_pixel);
             // ROS_INFO("w, %ld", width);
@@ -229,31 +226,36 @@ while (ros::ok()){
         
             
             if (occupancy_value == 100){
-                // ROS_INFO("og, %d", occupancy_value);
-                exploration_goal.header.stamp=ros::Time(0);
-                // geometry_msgs::PointStamped exploration_goal;
-                exploration_goal.header.frame_id=mapData.header.frame_id;
-                exploration_goal.point.x=y_pixel; //dla xy i x/y_pixel pojawiaja sie frontiers ale sa nie na mapie 
-                exploration_goal.point.y=x_pixel;
-                exploration_goal.point.z=0.0;
-                
-                p.x=y_pixel; 
-                p.y=x_pixel; 
-                p.z=0.0;
-                points.points.push_back(p);
-                pub.publish(points) ;
-                targetspub.publish(exploration_goal);
-                points.points.clear();
+                // if(fmod(x_pixel,y_pixel) == 0.0){
+                // int point_explore = mapData.data[ x, y];
 
-                // try {
-                //     geometry_msgs::PointStamped transformed_point;
-                //     tf_buffer.transform(exploration_goal, transformed_point, "map");
-                //     ROS_INFO("Punkt w ramce mapy: %f, %f, %f", transformed_point.point.x, transformed_point.point.y, transformed_point.point.z);
-                //     targetspub.publish(transformed_point);
-                // } catch (tf2::TransformException &ex) {
-                //     ROS_WARN("Nie można przekształcić punktu do ramki mapy: %s", ex.what());
-                // }
-            }
+                // if(occupancy_data[point_explore]== 0){
+                    float point_value1 = (y+0.01)*width+x;
+                    float point_value2 = y*width+(x+0.01);
+                    float point_value3 = (y-0.01)*width+x;
+                    float point_value4 = y*width+(x-0.01);
+                    int vp = -1; // okreslona zajetosc piksela -1 0 lub 100
+                if(occupancy_data[point_value1]==vp and occupancy_data[point_value2]==vp and occupancy_data[point_value3]==vp and occupancy_data[point_value4]==vp  ){
+                     ROS_INFO("og, %d", vp);
+                }
+                else{
+                    exploration_goal.header.stamp=ros::Time(0);
+                    // geometry_msgs::PointStamped exploration_goal;
+                    exploration_goal.header.frame_id=mapData.header.frame_id;
+                    exploration_goal.point.x=y; 
+                    exploration_goal.point.y=x;
+                    exploration_goal.point.z=0.0;
+                        p.x=y; 
+                        p.y=x; 
+                        p.z=0.0;
+                        points.points.push_back(p);
+                        pub.publish(points) ;
+                        targetspub.publish(exploration_goal);
+                        points.points.clear();
+                }
+                
+            }  
+            
         }
     }
     
@@ -265,12 +267,3 @@ rate.sleep();
 return 0;
 
 }
-
-
-
-
-
-
-
-
-
